@@ -1,0 +1,13 @@
+{
+  "fecha_corte": "2026-10-31",
+  "total_clientes": 120,
+  "clientes_con_compras": 117,
+  "clientes_sin_compras": 3,
+  "transacciones_confirmadas": 1384,
+  "ingreso_total_cop": 3681098300.36,
+  "clientes_frecuentes": 58,
+  "clientes_frios": 30,
+  "clientes_con_renovaciones_proximas": 34,
+  "clientes_con_coberturas_vencidas": 71,
+  "nota": "Cálculo basado en reglas y parámetros de prueba."
+}

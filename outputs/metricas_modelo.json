@@ -1,0 +1,67 @@
+{
+  "modelo": "Regresión Logística Didáctica (sin dependencias externas)",
+  "entrenamiento_rango": "hasta 2026-04-30",
+  "validacion_rango": "2026-05-01 a 2026-06-30",
+  "prueba_rango": "2026-07-01 a 2026-09-30",
+  "ventana_objetivo_dias": 30,
+  "umbral_seleccionado": 0.4,
+  "variables": [
+    "recencia_dias",
+    "frecuencia_30d",
+    "frecuencia_90d",
+    "historial_n"
+  ],
+  "medias_escalado": [
+    213.56983240223462,
+    0.6229050279329609,
+    1.7136871508379887,
+    4.138268156424581
+  ],
+  "desviaciones_escalado": [
+    295.10054982820765,
+    0.9645854448237239,
+    2.0514696550767746,
+    5.070771686078751
+  ],
+  "pesos_modelo": [
+    -0.422462,
+    -0.172871,
+    0.040233,
+    0.435491,
+    0.378904
+  ],
+  "metricas_validacion": {
+    "n": 240,
+    "TP": 73,
+    "TN": 88,
+    "FP": 63,
+    "FN": 16,
+    "accuracy": 0.6708,
+    "precision": 0.5368,
+    "recall": 0.8202,
+    "F1": 0.6489
+  },
+  "metricas_prueba_modelo": {
+    "n": 360,
+    "TP": 117,
+    "TN": 122,
+    "FP": 88,
+    "FN": 33,
+    "accuracy": 0.6639,
+    "precision": 0.5707,
+    "recall": 0.78,
+    "F1": 0.6592
+  },
+  "metricas_prueba_linea_base_compra_reciente": {
+    "n": 360,
+    "TP": 85,
+    "TN": 149,
+    "FP": 61,
+    "FN": 65,
+    "accuracy": 0.65,
+    "precision": 0.5822,
+    "recall": 0.5667,
+    "F1": 0.5743
+  },
+  "advertencia": "Datos de prueba; valida metodología temporal antes de aplicar en producción."
+}
