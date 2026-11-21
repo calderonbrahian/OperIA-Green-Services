@@ -1,10 +1,10 @@
 # 🟢 OperIA — Centro de Mando Inteligente de Operaciones
 ### Green Services and Solutions SAS · Reto 4: IA en Operaciones (Hackatón EstudIA - Capa 2)
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Streamlit Dashboard](https://img.shields.io/badge/streamlit-1.30+-FF4B4B.svg)](https://streamlit.io/)
-[![Machine Learning](https://img.shields.io/badge/ML-Logistic%20Regression%20Temporal-brightgreen.svg)]()
+[![Live Web](https://img.shields.io/badge/Demo%20Online-calderonbrahian.github.io-success?style=for-the-badge&logo=github)](https://calderonbrahian.github.io/OperIA-Green-Services/)
 [![Repository](https://img.shields.io/badge/GitHub-OperIA--Green--Services-blue.svg)](https://github.com/calderonbrahian/OperIA-Green-Services)
+
+### 🌐 👉 **[VER LA APLICACIÓN WEB EN LÍNEA (GITHUB PAGES)](https://calderonbrahian.github.io/OperIA-Green-Services/)** 👈
 
 > **OperIA** es una solución analítica integral que transforma la gestión operativa y comercial de Green Services and Solutions SAS: automatiza el cruce de datos, predice recompras a 30 días con Machine Learning, asigna prioridades de llamada mediante un semáforo inteligente y monitorea la sensibilidad de las ventas frente a las variaciones de la TRM.
 
