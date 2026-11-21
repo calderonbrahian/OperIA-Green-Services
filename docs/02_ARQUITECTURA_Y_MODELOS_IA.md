@@ -115,3 +115,19 @@ $$\text{Ventas\_COP}_m = \alpha + \beta \cdot \overline{\text{TRM}}_m + \epsilon
 ### Hallazgos
 * **Correlación de Pearson ($r$):** $+0.4736$ (Correlación positiva moderada-fuerte).
 * **Interpretación Financiera:** Al existir contratos y productos indexados en dólares (USD), los periodos de devaluación del peso (alza en la TRM) incrementan la facturación nominal en COP. El panel interactivo permite a la Gerencia Financiera y a Operaciones simular y visualizar estos escenarios.
+
+
+---
+
+## 6. Modelo de Proyección Hacia Adelante (Noviembre 2026)
+
+Con base en la fecha de corte del reto (31 de Octubre de 2026), OperIA proyecta el comportamiento del **próximo mes (Noviembre 2026)** agregando las probabilidades individuales estimadas por el modelo predictivo de IA:
+
+$$\text{Ingreso Proyectado Noviembre 2026} = \sum_{c=1}^{N} \left( P_c(\text{Recompra 30d}) \times \overline{\text{Ticket}}_c \right)$$
+
+* **Facturación Proyectada:** **\$169,870,345.83 COP**.
+* **Compradores Esperados ($P \ge 0.40$):** **70 clientes**.
+* **Clientes Fríos a Reactivar:** **50 cuentas**.
+* **Ticket Promedio Histórico:** **\$2,426,719 COP**.
+
+Esta formulación permite al equipo comercial ordenar la cartera no por intuición, sino por el valor monetario esperado de cada llamada, priorizando aquellas cuentas con mayor retorno potencial sobre el esfuerzo comercial.
