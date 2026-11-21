@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 from datetime import datetime, date
 import json
+import math
 
 import streamlit as st
 import pandas as pd
@@ -193,8 +194,9 @@ k5.metric("TRM Actual", f"${trm_actual:,.0f} COP", "Pesos por USD")
 st.markdown("---")
 
 # PESTAÑAS PRINCIPALES DEL DASHBOARD
-tab_semaforo, tab_trm, tab_explorador, tab_ficha, tab_objetivos, tab_pruebas = st.tabs([
+tab_semaforo, tab_simulador, tab_trm, tab_explorador, tab_ficha, tab_objetivos, tab_pruebas = st.tabs([
     "🚨 Semáforo de Clientes (Llamadas)",
+    "🧪 Probar Mis Datos (Simulador)",
     "📈 Comportamiento Ventas vs. TRM",
     "🔍 Datos Procesados en Vivo",
     "👤 Ficha 360° del Cliente",
@@ -207,12 +209,26 @@ with tab_semaforo:
     st.subheader("Semáforo Inteligente de Gestión Comercial (Llamadas Prioritarias)")
     st.caption("Filtra y prioriza las cuentas según el modelo de abandono y probabilidad de recompra calculada.")
 
+    # Botones de Clic Rápido en Semáforos
+    st.markdown("**👉 Haz clic directo en un semáforo para filtrar de inmediato:**")
+    bf1, bf2, bf3, bf4 = st.columns(4)
+    if "filtro_estado_rapido" not in st.session_state:
+        st.session_state["filtro_estado_rapido"] = "Todos"
+
+    if bf1.button("👁️ Ver Todos los Clientes", use_container_width=True):
+        st.session_state["filtro_estado_rapido"] = "Todos"
+    if bf2.button("🟢 Filtrar Solo Frecuentes", use_container_width=True):
+        st.session_state["filtro_estado_rapido"] = "🟢 Frecuentes (Activos)"
+    if bf3.button("🟡 Filtrar Solo Base Instalada", use_container_width=True):
+        st.session_state["filtro_estado_rapido"] = "🟡 Base Instalada (Seguimiento)"
+    if bf4.button("🔴 Filtrar Solo Fríos (Llamar)", use_container_width=True):
+        st.session_state["filtro_estado_rapido"] = "🔴 Fríos (Riesgo de Abandono)"
+
     c_f1, c_f2, c_f3 = st.columns([2, 2, 2])
     with c_f1:
-        filtro_estado = st.selectbox(
-            "Filtrar por Semáforo:",
-            ["Todos", "🔴 Fríos (Riesgo de Abandono)", "🟡 Base Instalada (Seguimiento)", "🟢 Frecuentes (Activos)"]
-        )
+        opciones_estado = ["Todos", "🔴 Fríos (Riesgo de Abandono)", "🟡 Base Instalada (Seguimiento)", "🟢 Frecuentes (Activos)"]
+        idx_default = opciones_estado.index(st.session_state["filtro_estado_rapido"]) if st.session_state["filtro_estado_rapido"] in opciones_estado else 0
+        filtro_estado = st.selectbox("Estado del Semáforo:", opciones_estado, index=idx_default)
     with c_f2:
         filtro_sector = st.selectbox(
             "Filtrar por Sector:",
@@ -231,7 +247,7 @@ with tab_semaforo:
         df_view = df_view[df_view["Cliente"].str.contains(filtro_busqueda, case=False, na=False) |
                           df_view["Cliente_ID"].str.contains(filtro_busqueda, case=False, na=False)]
 
-    st.markdown(f"**Cuentas encontradas: {len(df_view)}**")
+    st.markdown(f"**Cuentas encontradas: {len(df_view)} de {len(clientes_unicos)}**")
 
     columnas_mostrar = [
         "Cliente_ID", "Cliente", "Sector", "Estado", "Dias_Sin_Comprar",
@@ -251,14 +267,78 @@ with tab_semaforo:
         hide_index=True
     )
 
-    # Botón de descarga
-    csv_data = df_view.to_csv(index=False).encode("utf-8-sig")
-    st.download_button(
-        label="📥 Descargar Listado Comercial Filtrado (CSV)",
-        data=csv_data,
-        file_name="OperIA_Listado_Llamadas_Prioritarias.csv",
-        mime="text/csv"
-    )
+    # Botones de descarga de resultados en CSV
+    d_col1, d_col2 = st.columns(2)
+    with d_col1:
+        csv_filtrado = df_view.to_csv(index=False).encode("utf-8-sig")
+        st.download_button(
+            label="📥 Descargar Lista Comercial Filtrada (CSV)",
+            data=csv_filtrado,
+            file_name="OperIA_Llamadas_Filtradas.csv",
+            mime="text/csv",
+            use_container_width=True
+        )
+    with d_col2:
+        csv_completo = clientes_unicos.to_csv(index=False).encode("utf-8-sig")
+        st.download_button(
+            label="📥 Descargar Cartera Completa con Resultados (CSV)",
+            data=csv_completo,
+            file_name="OperIA_Cartera_Completa_Resultados.csv",
+            mime="text/csv",
+            use_container_width=True
+        )
+
+# ----------------- TAB 2: SIMULADOR Y PROBADOR DE DATOS -----------------
+with tab_simulador:
+    st.subheader("🧪 Probador Interactivo con IA: Ingresar Datos y Evaluar Resultados")
+    st.markdown("Ingresa datos de prueba para evaluar la probabilidad de compra y el semáforo en tiempo real con el modelo de Machine Learning:")
+
+    st.markdown("##### 1. Evaluar un Cliente Hipotético")
+    s1, s2, s3 = st.columns(3)
+    with s1:
+        in_dias = st.number_input("Días transcurridos sin compra (Recencia):", value=95, min_value=0)
+        in_monto = st.number_input("Monto estimado de compra (COP):", value=15000000, step=1000000)
+    with s2:
+        in_f30 = st.number_input("Compras confirmadas en últimos 30 días:", value=0, min_value=0)
+        in_f90 = st.number_input("Compras confirmadas en últimos 90 días:", value=0, min_value=0)
+    with s3:
+        in_hist = st.number_input("Total compras históricas acumuladas:", value=5, min_value=0)
+        in_renov = st.selectbox("¿Tiene contrato/póliza por vencer en ≤ 45 días?:", ["No", "Sí (Vencimiento próximo)"])
+
+    if st.button("⚡ Calcular Predicción con IA y Semáforo", type="primary"):
+        # Regresión logística con parámetros entrenados
+        mu = [213.5698, 0.6229, 1.7137, 4.1383]
+        sd = [295.1005, 0.9646, 2.0515, 5.0708]
+        w = [-0.422462, -0.172871, 0.040233, 0.435491, 0.378904]
+        vals = [in_dias, in_f30, in_f90, in_hist]
+        z = w[0] + sum(w[i+1] * ((vals[i] - mu[i]) / sd[i]) for i in range(4))
+        prob_pred = 1.0 / (1.0 + math.exp(-max(-35, min(35, z))))
+        prob_pct = round(prob_pred * 100, 1)
+
+        clasif = ModeloClasificacionComercial()
+        estado_sim, prior_sim, accion_sim = clasif.clasificar_cliente(
+            in_dias, in_hist, 1 if "Sí" in in_renov else 0, 0
+        )
+
+        st.success("¡Evaluación completada con éxito!")
+        rc1, rc2, rc3 = st.columns(3)
+        rc1.metric("Semáforo Calculado", estado_sim)
+        rc2.metric("Probabilidad Recompra 30d", f"{prob_pct}%", "Modelo Logístico Calibrado")
+        rc3.metric("Prioridad de Llamada", prior_sim)
+
+        st.info(f"💡 **Estrategia Recomendada:** {accion_sim} (Facturación estimada: ${in_monto:,.2f} COP).")
+
+    st.markdown("---")
+    st.markdown("##### 2. Cargar Archivo CSV Propio para Pruebas")
+    user_file = st.file_uploader("Subir archivo CSV de clientes personalizado", type=["csv"])
+    if user_file is not None:
+        try:
+            user_df = pd.read_csv(user_file)
+            st.write(f"Vista previa de datos cargados ({len(user_df)} registros):")
+            st.dataframe(user_df.head(), use_container_width=True)
+            st.success(f"Archivo `{user_file.name}` leído correctamente.")
+        except Exception as e:
+            st.error(f"Error al leer el archivo: {e}")
 
 # ----------------- TAB 2: VENTAS VS TRM -----------------
 with tab_trm:
