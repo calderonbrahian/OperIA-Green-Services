@@ -332,6 +332,29 @@ html_template = """<!doctype html>
           <span>🚨 Semáforo Inteligente de Gestión Comercial (Llamadas Prioritarias)</span>
           <span style="font-size:13px; font-weight:600; color:var(--text-muted);" id="contadorFiltro">Mostrando 120 clientes</span>
         </div>
+        <!-- Explicación del Cruce y Variables que Influyen -->
+        <div style="background:#f0f9ff; border-left:4px solid var(--primary-light); padding:16px; border-radius:8px; margin-bottom:18px;">
+          <h4 style="color:var(--primary); margin-bottom:8px; font-size:15px;">🔍 ¿Cómo se Hizo el Cruce y Cuáles Variables Influyen en la Decisión?</h4>
+          <p style="font-size:13px; color:#334155; line-height:1.6; margin-bottom:10px;">
+            El motor de OperIA cruza las bases de <b>Ventas</b>, <b>Base Instalada (Contratos)</b>, <b>Clientes</b> y <b>TRM Oficial</b> mediante el <code>Cliente_ID</code>.
+            Descarta ventas anuladas, convierte los importes USD a COP con la tasa exacta de la fecha y evalúa el estado del cliente según <b>reglas estrictas de recencia y contratos</b>:
+          </p>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:10px; font-size:12.5px;">
+            <div style="background:#ffffff; padding:10px 14px; border-radius:6px; border:1px solid #bfdbfe;">
+              <b>🟢 Frecuente (Activo) [Recencia ≤ 30 días]:</b><br>
+              <span style="color:#03543f;">• El cliente compró en el último mes (0 a 30 días). ¡Siempre está activo!<br>• Prioridad: <b>BAJA</b> si está al día; <b>MEDIA</b> si su póliza vence en ≤ 45d.</span>
+            </div>
+            <div style="background:#ffffff; padding:10px 14px; border-radius:6px; border:1px solid #fef08a;">
+              <b>🟡 Base Instalada [Recencia 31 a 89 días]:</b><br>
+              <span style="color:#713f12;">• Cuenta intermedia sin compras este mes, pero aún no en abandono.<br>• Prioridad: <b>MEDIA</b> si tiene póliza por renovar (≤ 45d); <b>NORMAL</b> si no.</span>
+            </div>
+            <div style="background:#ffffff; padding:10px 14px; border-radius:6px; border:1px solid #fecaca;">
+              <b>🔴 Frío (Riesgo Abandono) [Recencia ≥ 90 días]:</b><br>
+              <span style="color:#991b1b;">• Sin compras hace 3 o más meses.<br>• Prioridad: <b>ALTA</b> para llamada comercial urgente de reactivación.</span>
+            </div>
+          </div>
+        </div>
+
         <div class="controls">
           <input type="text" id="searchInput" placeholder="🔍 Buscar cliente por nombre o ID (ej: CLI012)...">
           <select id="statusFilter" onchange="aplicarFiltroSelect()">
@@ -355,9 +378,10 @@ html_template = """<!doctype html>
                 <th>Empresa</th>
                 <th>Sector</th>
                 <th>Días sin Compra</th>
-                <th>Semáforo (Clic para filtrar)</th>
+                <th>Semáforo (Clic)</th>
                 <th>Prob. Recompra (IA)</th>
                 <th>Prioridad</th>
+                <th>Criterio de Decisión</th>
                 <th>Facturación COP</th>
                 <th>Acción Recomendada</th>
               </tr>
@@ -786,34 +810,30 @@ html_template = """<!doctype html>
       return 1 / (1 + Math.exp(-z));
     }
 
-    // Regla de Semáforo
+    // Regla de Semáforo Estricta por Recencia y Contratos
     function evaluarSemaforo(diasSinCompra, transacciones, renovacionesProximas) {
       if (diasSinCompra >= 90) {
         return {
           estado: "Frío (Riesgo de Abandono)",
           prioridad: "ALTA",
-          accion: "Campaña de reactivación comercial urgente",
+          accion: "Campaña de reactivación comercial urgente (Llamada prioritaria)",
+          criterio: `Recencia crítica: ${diasSinCompra}d sin comprar (≥ 90d)`,
           badgeClass: "frio"
         };
-      } else if (renovacionesProximas) {
-        return {
-          estado: "Base Instalada (Seguimiento)",
-          prioridad: "MEDIA-ALTA",
-          accion: "Contactar para renovación de póliza / licencia",
-          badgeClass: "seguimiento"
-        };
-      } else if (diasSinCompra <= 30 || transacciones >= 8) {
+      } else if (diasSinCompra <= 30) {
         return {
           estado: "Frecuente (Activo)",
-          prioridad: "MEDIA",
-          accion: "Fidelización y propuesta de up-selling / módulos adicionales",
+          prioridad: renovacionesProximas ? "MEDIA" : "BAJA",
+          accion: renovacionesProximas ? "Fidelización activa y renovación anticipada de póliza" : "Fidelización, satisfacción y propuesta de up-selling",
+          criterio: renovacionesProximas ? `Compra reciente (${diasSinCompra}d ≤ 30d) + Contrato por renovar (≤ 45d)` : `Compra reciente (${diasSinCompra}d ≤ 30d) — Cuenta sana y al día`,
           badgeClass: "frecuente"
         };
       } else {
         return {
           estado: "Base Instalada (Seguimiento)",
-          prioridad: "NORMAL",
-          accion: "Seguimiento periódico habitual",
+          prioridad: renovacionesProximas ? "MEDIA" : "NORMAL",
+          accion: renovacionesProximas ? "Contactar para renovación de póliza / licencia de cobertura" : "Seguimiento periódico de cuenta y nuevas necesidades",
+          criterio: renovacionesProximas ? `Recencia intermedia (${diasSinCompra}d) + Contrato por vencer en ≤ 45d` : `Recencia intermedia (${diasSinCompra}d) — Seguimiento regular`,
           badgeClass: "seguimiento"
         };
       }
@@ -845,6 +865,7 @@ html_template = """<!doctype html>
             prob: parseFloat(row.Prob_Recompra_Pct || 50.0),
             prioridad: row.Prioridad_Llamada || (row.frio === 'True' ? 'ALTA' : 'MEDIA'),
             accion: row.Accion_Recomendada || 'Contacto comercial prioritario',
+            criterio: row.Criterio_Decision || '',
             ventas: isConf ? vCop : 0,
             ops: [row]
           });
@@ -984,6 +1005,7 @@ html_template = """<!doctype html>
           <td><span class="badge ${badgeCls}" onclick="event.stopPropagation(); filtrarPorSemaforoCard('${badgeCls}')">${c.estado}</span></td>
           <td><b>${c.prob}%</b></td>
           <td><span class="badge ${c.prioridad === 'ALTA' ? 'alta' : 'media'}">${c.prioridad}</span></td>
+          <td><small style="color:var(--text-muted); font-size:11.5px;">${c.criterio || ''}</small></td>
           <td>$${Math.round(c.ventas).toLocaleString('es-CO')}</td>
           <td><small>${c.accion}</small></td>
         `;
@@ -1335,7 +1357,7 @@ html_template = """<!doctype html>
 
     // Exportar CSV
     function exportarCSV(completo = false) {
-      const headers = ['Cliente_ID', 'Empresa', 'Sector', 'Ciudad', 'Dias_Sin_Compra', 'Semáforo', 'Prob_Recompra_Pct', 'Prioridad', 'Facturacion_COP', 'Accion_Sugerida'];
+      const headers = ['Cliente_ID', 'Empresa', 'Sector', 'Ciudad', 'Dias_Sin_Compra', 'Semáforo', 'Prob_Recompra_Pct', 'Prioridad', 'Criterio_Decision', 'Facturacion_COP', 'Accion_Sugerida'];
       let targetList = CLIENTES;
       if (!completo) {
         const query = document.getElementById('searchInput').value.toLowerCase();
@@ -1353,7 +1375,7 @@ html_template = """<!doctype html>
       }
 
       const rows = targetList.map(c => [
-        c.id, `"${c.nombre}"`, `"${c.sector}"`, `"${c.ciudad}"`, c.dias, `"${c.estado}"`, c.prob, c.prioridad, Math.round(c.ventas), `"${c.accion}"`
+        c.id, `"${c.nombre}"`, `"${c.sector}"`, `"${c.ciudad}"`, c.dias, `"${c.estado}"`, c.prob, c.prioridad, `"${c.criterio || ''}"`, Math.round(c.ventas), `"${c.accion}"`
       ]);
       const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(e => e.join(',')).join('\\n')];
       const encodedUri = encodeURI(csvContent);

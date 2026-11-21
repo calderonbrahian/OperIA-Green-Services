@@ -30,29 +30,54 @@ class ModeloClasificacionComercial:
         self.dias_renovacion = dias_renovacion
 
     def clasificar_cliente(self, dias_sin_compra: Optional[int], transacciones: int,
-                            renovaciones_proximas: int, coberturas_vencidas: int) -> Tuple[str, str, str]:
-        """Determina el estado del semáforo, prioridad de contacto y recomendación."""
+                            renovaciones_proximas: int, coberturas_vencidas: int) -> Tuple[str, str, str, str]:
+        """Determina el estado del semáforo, prioridad de contacto y criterio exacto de decisión.
+        
+        Reglas estrictas de negocio:
+        1. Recencia >= 90 días (o sin compras) -> 🔴 Frío (Riesgo de Abandono) | Prioridad ALTA
+        2. Recencia <= 30 días -> 🟢 Frecuente (Activo) | Prioridad MEDIA (si vence póliza) o BAJA (al día)
+        3. Recencia 31 a 89 días -> 🟡 Base Instalada (Seguimiento) | Prioridad MEDIA (si vence póliza) o NORMAL
+        """
         if dias_sin_compra is None:
-            return "Sin Compras", "Baja", "Invitar a primera compra / Demostración"
+            return (
+                "Frío (Riesgo de Abandono)",
+                "ALTA",
+                "Invitar a primera compra / Prospección inicial",
+                "Sin historial transaccional previo (Cuenta no activada)"
+            )
 
+        # 1. Regla estricta de abandono (Frío >= 90 días)
         if dias_sin_compra >= self.dias_frio:
             estado = "Frío (Riesgo de Abandono)"
             prioridad = "ALTA"
-            accion = "Campaña de reactivación comercial urgente"
-        elif renovaciones_proximas > 0 or coberturas_vencidas > 0:
-            estado = "Base Instalada (Seguimiento)"
-            prioridad = "MEDIA-ALTA"
-            accion = "Contactar para renovación de póliza / licencia de cobertura"
-        elif dias_sin_compra <= self.dias_frecuente or transacciones >= 8:
+            accion = "Campaña de reactivación comercial urgente (Llamada prioritaria)"
+            criterio = f"Recencia crítica: {dias_sin_compra} días sin comprar (≥ {self.dias_frio}d)"
+
+        # 2. Regla estricta de cliente frecuente / activo (Última compra <= 30 días)
+        elif dias_sin_compra <= self.dias_frecuente:
             estado = "Frecuente (Activo)"
-            prioridad = "MEDIA"
-            accion = "Fidelización y propuesta de up-selling / servicios adicionales"
+            if renovaciones_proximas > 0 or coberturas_vencidas > 0:
+                prioridad = "MEDIA"
+                accion = "Fidelización activa y renovación anticipada de póliza"
+                criterio = f"Compra reciente ({dias_sin_compra}d ≤ {self.dias_frecuente}d) + Contrato por renovar (≤ {self.dias_renovacion}d)"
+            else:
+                prioridad = "BAJA"
+                accion = "Fidelización y propuesta de up-selling / servicios adicionales"
+                criterio = f"Compra reciente ({dias_sin_compra}d ≤ {self.dias_frecuente}d) — Cuenta sana y al día"
+
+        # 3. Regla estricta de seguimiento intermedio (31 a 89 días)
         else:
             estado = "Base Instalada (Seguimiento)"
-            prioridad = "NORMAL"
-            accion = "Seguimiento periódico habitual"
+            if renovaciones_proximas > 0 or coberturas_vencidas > 0:
+                prioridad = "MEDIA"
+                accion = "Contactar para renovación de póliza / licencia de cobertura"
+                criterio = f"Recencia intermedia ({dias_sin_compra}d) + Contrato por vencer en ≤ {self.dias_renovacion}d"
+            else:
+                prioridad = "NORMAL"
+                accion = "Seguimiento periódico de cuenta y nuevas necesidades"
+                criterio = f"Recencia intermedia ({dias_sin_compra}d) sin vencimiento inminente"
 
-        return estado, prioridad, accion
+        return estado, prioridad, accion, criterio
 
 class ModeloPredictivoRecompra:
     """Regresión logística calibrada temporalmente para predicción de probabilidad a 30 días."""
@@ -223,7 +248,7 @@ def construir_dataset_operia_completo() -> Tuple[Path, Path]:
         renov_prox = sum(0 <= (date.fromisoformat(x["fecha_fin"]) - fecha_corte).days <= cfg["renovacion_dias"] for x in inst)
         cobert_venc = sum(date.fromisoformat(x["fecha_fin"]) < fecha_corte for x in inst)
 
-        estado, prioridad, accion = clasificador.clasificar_cliente(
+        estado, prioridad, accion, criterio = clasificador.clasificar_cliente(
             dias_sin_compra, len(v_cli), renov_prox, cobert_venc
         )
 
@@ -239,6 +264,7 @@ def construir_dataset_operia_completo() -> Tuple[Path, Path]:
             "estado_semaforo": estado,
             "prioridad_llamada": prioridad,
             "accion_sugerida": accion,
+            "criterio_decision": criterio,
             "probabilidad_recompra_30d": round(prob_recompra * 100, 1),
             "renovaciones_proximas": renov_prox,
             "coberturas_vencidas": cobert_venc
@@ -278,7 +304,8 @@ def construir_dataset_operia_completo() -> Tuple[Path, Path]:
             "Estado_Cliente": c_meta.get("estado_semaforo", ""),
             "Prob_Recompra_Pct": c_meta.get("probabilidad_recompra_30d", 0.0),
             "Prioridad_Llamada": c_meta.get("prioridad_llamada", "NORMAL"),
-            "Accion_Recomendada": c_meta.get("accion_sugerida", "")
+            "Accion_Recomendada": c_meta.get("accion_sugerida", ""),
+            "Criterio_Decision": c_meta.get("criterio_decision", "")
         })
 
     OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)

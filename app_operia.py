@@ -2,6 +2,7 @@
 
 Solución analítica y visual completa para Green Services and Solutions SAS:
 - Semáforo Inteligente de Clientes (Llamadas Prioritarias)
+- Explicación del Cruce Relacional y Variables que Influyeron en la Decisión
 - Proyección Próximo Mes (Noviembre 2026) con Base en Datos Actuales
 - Explicación Caja Blanca del Modelo de IA (Fórmula, Z-scores y Pesos)
 - Probador y Simulador Interactivo de Datos (Hipotético y Carga de CSV)
@@ -118,40 +119,36 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+CSV_CONSOLIDADO = OUTPUTS_DIR / "OperIA_Dataset_Consolidado.csv"
+XLSX_CONSOLIDADO = OUTPUTS_DIR / "OperIA_Dataset_Consolidado.xlsx"
 
 @st.cache_data(show_spinner=False)
-def cargar_y_procesar_todo():
-    """Carga y procesa todo el pipeline de operaciones y modelos de forma memorizada."""
-    data = construir_dataset_operia_completo(DATA_RAW_DIR)
-    modelo_eval = entrenar_y_evaluar_modelo(data["dataset_entrenamiento"])
-    return data, modelo_eval
+def cargar_datos_consolidados():
+    """Carga y procesa el dataset consolidado OperIA asegurando su existencia."""
+    if not CSV_CONSOLIDADO.exists():
+        procesar_operaciones()
+        entrenar_y_evaluar_modelo()
+        construir_dataset_operia_completo()
+    df_data = pd.read_csv(CSV_CONSOLIDADO)
+    df_data["Fecha"] = pd.to_datetime(df_data["Fecha"])
+    return df_data
 
+df = cargar_datos_consolidados()
 
-# Cargar datos
-try:
-    data_operia, res_modelo = cargar_y_procesar_todo()
-except Exception as e:
-    st.error(f"Error al inicializar datos del proyecto: {e}")
-    st.stop()
-
-# Datasets clave
-clientes_unicos = data_operia["clientes_scoring"].copy()
-df_ventas_raw = data_operia["ventas"].copy()
-df_trm_raw = data_operia["trm"].copy()
-
-# Normalizar columnas para la vista
-df = pd.DataFrame(df_ventas_raw)
-df["Fecha"] = pd.to_datetime(df["fecha_venta"])
-df["Ventas_COP"] = pd.to_numeric(df["importe_cop"], errors="coerce").fillna(0)
-df["TRM"] = pd.to_numeric(df["trm_aplicada"], errors="coerce").fillna(0)
-df["Cantidad"] = pd.to_numeric(df["cantidad"], errors="coerce").fillna(0)
-df["Precio_Unitario"] = pd.to_numeric(df["precio_unitario"], errors="coerce").fillna(0)
-df["Cliente_ID"] = df["cliente_id"]
-df["Cliente"] = df["nombre_cliente"]
-df["Producto"] = df["nombre_producto"]
-df["Familia_Producto"] = df["familia"]
-df["Moneda"] = df["moneda"]
-df["Estado_Venta"] = df["estado"]
+# Clientes únicos agregados
+clientes_unicos = df.groupby("Cliente_ID").agg(
+    Cliente=("Cliente", "first"),
+    Sector=("Sector", "first"),
+    Ciudad=("Ciudad", "first"),
+    Estado=("Estado_Cliente", "first"),
+    Dias_Sin_Comprar=("Dias_Sin_Comprar", "first"),
+    Prob_Recompra=("Prob_Recompra_Pct", "first"),
+    Prioridad=("Prioridad_Llamada", "first"),
+    Accion=("Accion_Recomendada", "first"),
+    Criterio=("Criterio_Decision", "first"),
+    Total_Ventas_COP=("Ventas_COP", "sum"),
+    Transacciones=("Venta_ID", "count")
+).reset_index()
 
 # ----------------- SIDEBAR -----------------
 st.sidebar.image("https://img.icons8.com/fluency/96/artificial-intelligence.png", width=65)
@@ -162,20 +159,24 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("⚙️ Control de Datos")
 if st.sidebar.button("🔄 Re-ejecutar Pipeline Completo", use_container_width=True):
     st.cache_data.clear()
-    data_operia, res_modelo = cargar_y_procesar_todo()
-    clientes_unicos = data_operia["clientes_scoring"].copy()
-    st.sidebar.success("¡Pipeline ejecutado con éxito!")
+    procesar_operaciones()
+    entrenar_y_evaluar_modelo()
+    construir_dataset_operia_completo()
+    st.rerun()
 
 if st.sidebar.button("🎲 Regenerar Datos Sintéticos", use_container_width=True):
     gen = GeneradorDatosSinteticos(seed=212026)
-    archivos = gen.generar_todos(DATA_RAW_DIR)
+    gen.guardar_dataset_completo(DATA_RAW_DIR)
+    procesar_operaciones()
+    entrenar_y_evaluar_modelo()
+    construir_dataset_operia_completo()
     st.cache_data.clear()
-    data_operia, res_modelo = cargar_y_procesar_todo()
-    clientes_unicos = data_operia["clientes_scoring"].copy()
     st.sidebar.success("¡Datos sintéticos regenerados!")
+    st.rerun()
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 🌐 Enlaces del Proyecto")
+st.sidebar.markdown("• [Visor Web Online (GitHub Pages)](https://calderonbrahian.github.io/OperIA-Green-Services/)")
 st.sidebar.markdown("• [GitHub Repositorio](https://github.com/calderonbrahian/OperIA-Green-Services)")
 st.sidebar.markdown("• [Plataforma EstudIA](https://estudia-seguimiento.vercel.app/hackaton)")
 st.sidebar.caption("Autor: Brahian Calderón · 2026")
@@ -229,7 +230,30 @@ tab_semaforo, tab_proyeccion, tab_explicacion, tab_simulador, tab_pruebas, tab_t
 # ----------------- TAB 1: SEMÁFORO INTELIGENTE -----------------
 with tab_semaforo:
     st.subheader("Semáforo Inteligente de Gestión Comercial (Llamadas Prioritarias)")
-    st.caption("Filtra y prioriza las cuentas según el modelo de abandono y probabilidad de recompra calculada.")
+    st.caption("Filtra y prioriza las cuentas según el modelo de abandono, recencia estricta y contratos.")
+
+    # Explicación del Cruce y Variables que Influyen
+    with st.expander("🔍 ¿Cómo se Hizo el Cruce y Cuáles Variables Influyeron en las Decisiones?", expanded=True):
+        st.markdown(r"""
+        **1. Cruce Relacional de 4 Fuentes de Datos (Clave: `Cliente_ID`):**
+        * **Ventas (`ventas.csv`):** 1,407 transacciones. Se filtran y descartan las anuladas ($0 COP). Se calcula la última fecha confirmada.
+        * **Clientes (`clientes.csv`):** 120 empresas con sector industrial y ciudad.
+        * **Base Instalada (`base_instalada.csv`):** 243 contratos/pólizas. Se calcula la fecha fin para detectar vencimientos en $\le 45$ días.
+        * **TRM Oficial (`trm_prueba.csv`):** 669 tasas diarias. Multiplica cada venta en USD por la tasa exacta de ese día para obtener valores homogéneos en COP.
+
+        **2. Variables y Reglas Estrictas del Semáforo:**
+        * **Variable Determinante: Recencia (`Dias_Sin_Comprar`):**
+          * **🟢 Frecuente (Activo) [0 a 30 días]:** ¡El cliente compró en el último mes! **Siempre está en Frecuente** (incluyendo clientes con 0 días). Prioridad **BAJA** si está al día, o **MEDIA** si además tiene un contrato por vencer en $\le 45$ días.
+          * **🟡 Base Instalada (Seguimiento) [31 a 89 días]:** Cliente intermedio sin compras este mes pero que no ha abandonado. Prioridad **MEDIA** si vence póliza, o **NORMAL** de rutina.
+          * **🔴 Frío (Riesgo de Abandono) [$\ge 90$ días o sin compras]:** Inactividad crítica. Prioridad **ALTA** (alerta de deserción).
+        * **Variable Moduladora: Vencimiento de Contrato ($\le 45$ días):**
+          * Si el cliente tiene contrato por vencer, se programa llamada de *renovación anticipada* con prioridad **MEDIA**.
+        * **Aclaración sobre Prioridades:**
+          * Se eliminó la ambigua etiqueta *"MEDIA-ALTA"*. La escala ahora es limpia:
+            * **ALTA:** 🔴 Clientes Fríos ($\ge 90$ días) para evitar abandono comercial.
+            * **MEDIA:** Clientes con contratos o pólizas por vencer en $\le 45$ días.
+            * **BAJA / NORMAL:** Cuentas al día con compras recientes o seguimiento habitual.
+        """)
 
     # Botones de Clic Rápido en Semáforos
     st.markdown("**👉 Haz clic directo en un semáforo para filtrar de inmediato:**")
@@ -239,11 +263,11 @@ with tab_semaforo:
 
     if bf1.button("👁️ Ver Todos los Clientes", use_container_width=True):
         st.session_state["filtro_estado_rapido"] = "Todos"
-    if bf2.button("🟢 Filtrar Solo Frecuentes", use_container_width=True):
+    if bf2.button(f"🟢 Filtrar Solo Frecuentes ({n_frec})", use_container_width=True):
         st.session_state["filtro_estado_rapido"] = "🟢 Frecuentes (Activos)"
-    if bf3.button("🟡 Filtrar Solo Base Instalada", use_container_width=True):
+    if bf3.button(f"🟡 Filtrar Solo Base Instalada ({n_seg})", use_container_width=True):
         st.session_state["filtro_estado_rapido"] = "🟡 Base Instalada (Seguimiento)"
-    if bf4.button("🔴 Filtrar Solo Fríos (Llamar)", use_container_width=True):
+    if bf4.button(f"🔴 Filtrar Solo Fríos ({n_frios})", use_container_width=True):
         st.session_state["filtro_estado_rapido"] = "🔴 Fríos (Riesgo de Abandono)"
 
     c_f1, c_f2, c_f3 = st.columns([2, 2, 2])
@@ -273,7 +297,7 @@ with tab_semaforo:
 
     columnas_mostrar = [
         "Cliente_ID", "Cliente", "Sector", "Estado", "Dias_Sin_Comprar",
-        "Prob_Recompra", "Prioridad", "Accion", "Total_Ventas_COP"
+        "Prob_Recompra", "Prioridad", "Criterio", "Accion", "Total_Ventas_COP"
     ]
     st.dataframe(
         df_view[columnas_mostrar].rename(columns={
@@ -282,6 +306,7 @@ with tab_semaforo:
             "Dias_Sin_Comprar": "Días sin Compra",
             "Prob_Recompra": "Prob. Recompra 30d (%)",
             "Prioridad": "Prioridad Contacto",
+            "Criterio": "Criterio que Activó la Regla",
             "Accion": "Estrategia Recomendada",
             "Total_Ventas_COP": "Facturación COP"
         }),
@@ -331,7 +356,7 @@ with tab_proyeccion:
     # KPIs de proyección
     kp1, kp2, kp3, kp4 = st.columns(4)
     kp1.metric("Facturación Proyectada Nov 2026", f"${proyeccion_nov_cop:,.0f} COP", f"+${proyeccion_nov_cop/1e6:,.1f}M COP")
-    kp2.metric("Compradores Esperados (P ≥ 40%)", f"{clientes_propension_alta} Clientes", "70 cuentas activas")
+    kp2.metric("Compradores Esperados (P ≥ 40%)", f"{clientes_propension_alta} Clientes", f"{clientes_propension_alta} cuentas activas")
     kp3.metric("Ticket Promedio Proyectado", f"${ticket_promedio:,.0f} COP", "Basado en histórico")
     kp4.metric("Cuentas Frías a Reactivar", f"{n_frios} Cuentas", "Oportunidad de recuperación")
 
@@ -437,12 +462,12 @@ with tab_explicacion:
 
     with e2:
         st.markdown("##### 3. Ecuación Logit y Función Sigmoide")
-        st.markdown("""
+        st.markdown(r"""
         El modelo combina linealmente las variables estandarizadas:
-        $$Z_{\\text{logit}} = w_0 + \\sum_{i=1}^{4} w_i \\cdot Z_i$$
+        $$Z_{\text{logit}} = w_0 + \sum_{i=1}^{4} w_i \cdot Z_i$$
         
         Y aplica la función sigmoide para transformar el resultado a una probabilidad real entre 0% y 100%:
-        $$P(\\text{Recompra 30d}) = \\frac{1}{1 + e^{-Z_{\\text{logit}}}}$$
+        $$P(\text{Recompra 30d}) = \frac{1}{1 + e^{-Z_{\text{logit}}}}$$
         """)
 
         st.markdown("##### 4. Umbral de Decisión Operativo (θ = 0.40)")
@@ -461,7 +486,7 @@ with tab_explicacion:
         c_row = clientes_unicos[clientes_unicos["Cliente"] == cliente_sel_exp].iloc[0]
 
         dias_val = float(c_row["Dias_Sin_Comprar"])
-        f_hist = float(c_row.get("Frecuencia_Historica", 4.0))
+        f_hist = float(c_row.get("Transacciones", 4.0))
         f_30 = 1.0 if dias_val <= 30 else 0.0
         f_90 = 2.0 if dias_val <= 90 else 0.0
 
@@ -493,11 +518,11 @@ with tab_simulador:
     st.markdown("##### 1. Evaluar un Cliente Hipotético")
     s1, s2, s3 = st.columns(3)
     with s1:
-        in_dias = st.number_input("Días transcurridos sin compra (Recencia):", value=95, min_value=0)
+        in_dias = st.number_input("Días transcurridos sin compra (Recencia):", value=15, min_value=0)
         in_monto = st.number_input("Monto estimado de compra (COP):", value=15000000, step=1000000)
     with s2:
-        in_f30 = st.number_input("Compras confirmadas en últimos 30 días:", value=0, min_value=0)
-        in_f90 = st.number_input("Compras confirmadas en últimos 90 días:", value=0, min_value=0)
+        in_f30 = st.number_input("Compras confirmadas en últimos 30 días:", value=1, min_value=0)
+        in_f90 = st.number_input("Compras confirmadas en últimos 90 días:", value=2, min_value=0)
     with s3:
         in_hist = st.number_input("Total compras históricas acumuladas:", value=5, min_value=0)
         in_renov = st.selectbox("¿Tiene contrato/póliza por vencer en ≤ 45 días?:", ["No", "Sí (Vencimiento próximo)"])
@@ -513,7 +538,7 @@ with tab_simulador:
         prob_pct = round(prob_pred * 100, 1)
 
         clasif = ModeloClasificacionComercial()
-        estado_sim, prior_sim, accion_sim = clasif.clasificar_cliente(
+        estado_sim, prior_sim, accion_sim, crit_sim = clasif.clasificar_cliente(
             in_dias, in_hist, 1 if "Sí" in in_renov else 0, 0
         )
 
@@ -524,6 +549,7 @@ with tab_simulador:
         rc3.metric("Prioridad de Llamada", prior_sim)
 
         st.info(f"💡 **Estrategia Recomendada:** {accion_sim} (Facturación estimada: ${in_monto:,.2f} COP).")
+        st.caption(f"📌 **Criterio que Activó la Regla:** {crit_sim}")
 
     st.markdown("---")
     st.markdown("##### 2. Cargar Archivo CSV Propio para Pruebas")

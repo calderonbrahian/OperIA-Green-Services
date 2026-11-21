@@ -59,13 +59,15 @@ $$\text{Venta COP} = \text{Importe Neto (USD)} \times \text{TRM}_{\text{Fecha}}$
 
 ## 3. Modelo 1: Clasificador Comercial y Semáforo Inteligente
 
-El semáforo traduce la complejidad de las fechas y contratos en una regla de decisión transparente y accionable para los asesores comerciales:
+El semáforo traduce la complejidad de las fechas y contratos en una regla de decisión transparente y accionable basada estrictamente en **Recencia** (Días sin compra) y **Vigencia de Contratos**:
 
-| Estado | Criterio Operacional | Prioridad de Llamada | Acción Comercial Recomendada |
-| :--- | :--- | :--- | :--- |
-| 🟢 **Frecuente (Activo)** | Días sin compra $\le 30$ o $\ge 8$ compras acumuladas. | MEDIA | Fidelización y propuesta de módulos adicionales (*up-selling*). |
-| 🟡 **Base Instalada (Seguimiento)** | Días sin compra entre 31 y 89, o con contratos con renovación próxima ($\le 45$ días) o vencidos. | MEDIA-ALTA | Contactar para renovación anticipada de póliza o licencia de cobertura. |
-| 🔴 **Frío (Riesgo de Abandono)** | Días sin compra $\ge 90$ días o sin historial de compra. | ALTA | Campaña de reactivación urgente con oferta personalizada. |
+| Estado | Criterio de Recencia | Modulador de Contrato | Prioridad de Llamada | Acción Comercial Recomendada |
+| :--- | :--- | :--- | :---: | :--- |
+| 🟢 **Frecuente (Activo)** | Días sin compra $\le 30$ días (¡compró en el último mes!). | Si póliza vence en $\le 45$ días $\to$ Renovación preventiva.<br>Si no $\to$ Cuenta sana al día. | **MEDIA** (con póliza)<br>**BAJA** (al día) | Fidelización activa, renovación oportuna y propuesta de módulos adicionales (*up-selling*). |
+| 🟡 **Base Instalada (Seguimiento)** | Días sin compra entre 31 y 89 días (periodo intermedio). | Si contrato vence en $\le 45$ días $\to$ Renovación oportuna.<br>Si no $\to$ Seguimiento periódico. | **MEDIA** (con póliza)<br>**NORMAL** (rutina) | Contactar para renovación anticipada de cobertura o explorar nuevas necesidades operativas. |
+| 🔴 **Frío (Riesgo de Abandono)** | Días sin compra $\ge 90$ días o sin historial previo. | Inactividad comercial crítica (riesgo inminente de *churn*). | **ALTA** | Campaña urgente de reactivación comercial con oferta personalizada. |
+
+> **Nota sobre Prioridades:** Se eliminó la etiqueta ambigua *"MEDIA-ALTA"*. La escala ahora es limpia y operativa: **ALTA** (urgencia por abandono), **MEDIA** (renovación oportuna antes de que expire la póliza), y **NORMAL / BAJA** (cuenta sana al día). Además, cada fila incluye el campo `Criterio_Decision` que audita en texto claro por qué se disparó la regla.
 
 ---
 
