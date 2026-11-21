@@ -247,6 +247,16 @@ def construir_dataset_operia_completo() -> Tuple[Path, Path]:
         inst = instalaciones_por_cliente[cid]
         renov_prox = sum(0 <= (date.fromisoformat(x["fecha_fin"]) - fecha_corte).days <= cfg["renovacion_dias"] for x in inst)
         cobert_venc = sum(date.fromisoformat(x["fecha_fin"]) < fecha_corte for x in inst)
+        cobert_vig = sum((date.fromisoformat(x["fecha_fin"]) - fecha_corte).days > cfg["renovacion_dias"] for x in inst)
+
+        if len(inst) == 0:
+            estado_cobertura = "Sin Cobertura"
+        elif renov_prox > 0:
+            estado_cobertura = "Próxima a Renovar (≤ 45d)"
+        elif cobert_venc > 0 and cobert_vig == 0:
+            estado_cobertura = "Vencida (< 0d)"
+        else:
+            estado_cobertura = "Vigente (> 45d)"
 
         estado, prioridad, accion, criterio = clasificador.clasificar_cliente(
             dias_sin_compra, len(v_cli), renov_prox, cobert_venc
@@ -262,6 +272,7 @@ def construir_dataset_operia_completo() -> Tuple[Path, Path]:
         cliente_meta[cid] = {
             "dias_sin_compra": dias_sin_compra if dias_sin_compra is not None else "",
             "estado_semaforo": estado,
+            "estado_cobertura": estado_cobertura,
             "prioridad_llamada": prioridad,
             "accion_sugerida": accion,
             "criterio_decision": criterio,
@@ -302,6 +313,7 @@ def construir_dataset_operia_completo() -> Tuple[Path, Path]:
             "Estado_Venta": v["estado"],
             "Dias_Sin_Comprar": c_meta.get("dias_sin_compra", ""),
             "Estado_Cliente": c_meta.get("estado_semaforo", ""),
+            "Estado_Cobertura": c_meta.get("estado_cobertura", "Sin Cobertura"),
             "Prob_Recompra_Pct": c_meta.get("probabilidad_recompra_30d", 0.0),
             "Prioridad_Llamada": c_meta.get("prioridad_llamada", "NORMAL"),
             "Accion_Recomendada": c_meta.get("accion_sugerida", ""),

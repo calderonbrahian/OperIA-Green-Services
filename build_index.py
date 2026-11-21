@@ -363,7 +363,14 @@ html_template = """<!doctype html>
             <option value="seguimiento">🟡 Base Instalada (Seguimiento)</option>
             <option value="frecuente">🟢 Frecuentes (Activos)</option>
           </select>
-          <select id="sectorFilter">
+          <select id="coberturaFilter" onchange="renderSemaforo()">
+            <option value="todas">Todas las Coberturas</option>
+            <option value="proxima">🟡 Próxima a Renovar (≤ 45d)</option>
+            <option value="vigente">🟢 Vigente (> 45d)</option>
+            <option value="vencida">🔴 Vencida (< 0d)</option>
+            <option value="sin">⚪ Sin Cobertura</option>
+          </select>
+          <select id="sectorFilter" onchange="renderSemaforo()">
             <option value="todos">Todos los Sectores</option>
           </select>
           <button class="btn btn-primary" onclick="exportarCSV(false)">📥 Descargar Lista Filtrada (CSV)</button>
@@ -378,7 +385,8 @@ html_template = """<!doctype html>
                 <th>Empresa</th>
                 <th>Sector</th>
                 <th>Días sin Compra</th>
-                <th>Semáforo (Clic)</th>
+                <th>Semáforo</th>
+                <th>Estado Cobertura</th>
                 <th>Prob. Recompra (IA)</th>
                 <th>Prioridad</th>
                 <th>Criterio de Decisión</th>
@@ -861,6 +869,7 @@ html_template = """<!doctype html>
             sector: row.Sector || row.sector || 'General',
             ciudad: row.Ciudad || row.ciudad || 'No especificada',
             estado: row.Estado_Cliente || (row.frio === 'True' || row.frio === true ? 'Frío (Riesgo de Abandono)' : 'Frecuente (Activo)'),
+            cobertura: row.Estado_Cobertura || 'Sin Cobertura',
             dias: parseInt(row.Dias_Sin_Comprar || row.dias_sin_compra || 0),
             prob: parseFloat(row.Prob_Recompra_Pct || 50.0),
             prioridad: row.Prioridad_Llamada || (row.frio === 'True' ? 'ALTA' : 'MEDIA'),
@@ -977,6 +986,7 @@ html_template = """<!doctype html>
     function renderSemaforo() {
       const query = document.getElementById('searchInput').value.toLowerCase();
       const statusF = document.getElementById('statusFilter').value;
+      const cobF = document.getElementById('coberturaFilter').value;
       const sectorF = document.getElementById('sectorFilter').value;
       const tbody = document.getElementById('semaforoBody');
       tbody.innerHTML = '';
@@ -987,15 +997,22 @@ html_template = """<!doctype html>
         if (statusF === 'frio') matchS = c.estado.includes('Frío');
         else if (statusF === 'frecuente') matchS = c.estado.includes('Frecuente');
         else if (statusF === 'seguimiento') matchS = !c.estado.includes('Frío') && !c.estado.includes('Frecuente');
+
+        let matchCob = true;
+        if (cobF === 'proxima') matchCob = c.cobertura.includes('Próxima');
+        else if (cobF === 'vigente') matchCob = c.cobertura.includes('Vigente');
+        else if (cobF === 'vencida') matchCob = c.cobertura.includes('Vencida');
+        else if (cobF === 'sin') matchCob = c.cobertura.includes('Sin Cobertura');
         
         let matchSec = (sectorF === 'todos') || (c.sector === sectorF);
-        return matchQ && matchS && matchSec;
+        return matchQ && matchS && matchCob && matchSec;
       });
 
       document.getElementById('contadorFiltro').innerText = `Mostrando ${filtrados.length} de ${CLIENTES.length} clientes`;
 
       filtrados.forEach(c => {
         const badgeCls = c.estado.includes('Frío') ? 'frio' : c.estado.includes('Frecuente') ? 'frecuente' : 'seguimiento';
+        const cobCls = c.cobertura.includes('Próxima') ? 'seguimiento' : c.cobertura.includes('Vigente') ? 'frecuente' : c.cobertura.includes('Vencida') ? 'frio' : 'secondary';
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><b>${c.id}</b></td>
@@ -1003,6 +1020,7 @@ html_template = """<!doctype html>
           <td>${c.sector}</td>
           <td>${c.dias} días</td>
           <td><span class="badge ${badgeCls}" onclick="event.stopPropagation(); filtrarPorSemaforoCard('${badgeCls}')">${c.estado}</span></td>
+          <td><span class="badge ${cobCls}" style="font-size:11px;">${c.cobertura}</span></td>
           <td><b>${c.prob}%</b></td>
           <td><span class="badge ${c.prioridad === 'ALTA' ? 'alta' : 'media'}">${c.prioridad}</span></td>
           <td><small style="color:var(--text-muted); font-size:11.5px;">${c.criterio || ''}</small></td>
@@ -1357,11 +1375,12 @@ html_template = """<!doctype html>
 
     // Exportar CSV
     function exportarCSV(completo = false) {
-      const headers = ['Cliente_ID', 'Empresa', 'Sector', 'Ciudad', 'Dias_Sin_Compra', 'Semáforo', 'Prob_Recompra_Pct', 'Prioridad', 'Criterio_Decision', 'Facturacion_COP', 'Accion_Sugerida'];
+      const headers = ['Cliente_ID', 'Empresa', 'Sector', 'Ciudad', 'Dias_Sin_Compra', 'Semáforo', 'Estado_Cobertura', 'Prob_Recompra_Pct', 'Prioridad', 'Criterio_Decision', 'Facturacion_COP', 'Accion_Sugerida'];
       let targetList = CLIENTES;
       if (!completo) {
         const query = document.getElementById('searchInput').value.toLowerCase();
         const statusF = document.getElementById('statusFilter').value;
+        const cobF = document.getElementById('coberturaFilter').value;
         const sectorF = document.getElementById('sectorFilter').value;
         targetList = CLIENTES.filter(c => {
           const matchQ = c.nombre.toLowerCase().includes(query) || c.id.toLowerCase().includes(query);
@@ -1369,13 +1388,20 @@ html_template = """<!doctype html>
           if (statusF === 'frio') matchS = c.estado.includes('Frío');
           else if (statusF === 'frecuente') matchS = c.estado.includes('Frecuente');
           else if (statusF === 'seguimiento') matchS = !c.estado.includes('Frío') && !c.estado.includes('Frecuente');
+
+          let matchCob = true;
+          if (cobF === 'proxima') matchCob = c.cobertura.includes('Próxima');
+          else if (cobF === 'vigente') matchCob = c.cobertura.includes('Vigente');
+          else if (cobF === 'vencida') matchCob = c.cobertura.includes('Vencida');
+          else if (cobF === 'sin') matchCob = c.cobertura.includes('Sin Cobertura');
+
           let matchSec = (sectorF === 'todos') || (c.sector === sectorF);
-          return matchQ && matchS && matchSec;
+          return matchQ && matchS && matchCob && matchSec;
         });
       }
 
       const rows = targetList.map(c => [
-        c.id, `"${c.nombre}"`, `"${c.sector}"`, `"${c.ciudad}"`, c.dias, `"${c.estado}"`, c.prob, c.prioridad, `"${c.criterio || ''}"`, Math.round(c.ventas), `"${c.accion}"`
+        c.id, `"${c.nombre}"`, `"${c.sector}"`, `"${c.ciudad}"`, c.dias, `"${c.estado}"`, `"${c.cobertura}"`, c.prob, c.prioridad, `"${c.criterio || ''}"`, Math.round(c.ventas), `"${c.accion}"`
       ]);
       const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(e => e.join(',')).join('\\n')];
       const encodedUri = encodeURI(csvContent);

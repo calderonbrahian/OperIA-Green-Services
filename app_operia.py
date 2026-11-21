@@ -141,6 +141,7 @@ clientes_unicos = df.groupby("Cliente_ID").agg(
     Sector=("Sector", "first"),
     Ciudad=("Ciudad", "first"),
     Estado=("Estado_Cliente", "first"),
+    Cobertura=("Estado_Cobertura", "first"),
     Dias_Sin_Comprar=("Dias_Sin_Comprar", "first"),
     Prob_Recompra=("Prob_Recompra_Pct", "first"),
     Prioridad=("Prioridad_Llamada", "first"),
@@ -270,23 +271,28 @@ with tab_semaforo:
     if bf4.button(f"🔴 Filtrar Solo Fríos ({n_frios})", use_container_width=True):
         st.session_state["filtro_estado_rapido"] = "🔴 Fríos (Riesgo de Abandono)"
 
-    c_f1, c_f2, c_f3 = st.columns([2, 2, 2])
+    c_f1, c_f2, c_f3, c_f4 = st.columns([2, 2, 2, 2])
     with c_f1:
         opciones_estado = ["Todos", "🔴 Fríos (Riesgo de Abandono)", "🟡 Base Instalada (Seguimiento)", "🟢 Frecuentes (Activos)"]
         idx_default = opciones_estado.index(st.session_state["filtro_estado_rapido"]) if st.session_state["filtro_estado_rapido"] in opciones_estado else 0
         filtro_estado = st.selectbox("Estado del Semáforo:", opciones_estado, index=idx_default)
     with c_f2:
+        opciones_cobertura = ["Todas", "Próxima a Renovar (≤ 45d)", "Vigente (> 45d)", "Vencida (< 0d)", "Sin Cobertura"]
+        filtro_cobertura = st.selectbox("Estado de Cobertura:", opciones_cobertura)
+    with c_f3:
         filtro_sector = st.selectbox(
             "Filtrar por Sector:",
             ["Todos"] + sorted(clientes_unicos["Sector"].dropna().unique().tolist())
         )
-    with c_f3:
+    with c_f4:
         filtro_busqueda = st.text_input("Buscar cliente por nombre o ID:", placeholder="Ej: CLI012 o Corporativo")
 
     df_view = clientes_unicos.copy()
     if filtro_estado != "Todos":
         patron = "Frío" if "Frío" in filtro_estado else "Base|Seguimiento" if "Base" in filtro_estado else "Frecuente"
         df_view = df_view[df_view["Estado"].str.contains(patron, na=False)]
+    if filtro_cobertura != "Todas":
+        df_view = df_view[df_view["Cobertura"] == filtro_cobertura]
     if filtro_sector != "Todos":
         df_view = df_view[df_view["Sector"] == filtro_sector]
     if filtro_busqueda:
@@ -296,13 +302,14 @@ with tab_semaforo:
     st.markdown(f"**Cuentas encontradas: {len(df_view)} de {len(clientes_unicos)}**")
 
     columnas_mostrar = [
-        "Cliente_ID", "Cliente", "Sector", "Estado", "Dias_Sin_Comprar",
+        "Cliente_ID", "Cliente", "Sector", "Estado", "Cobertura", "Dias_Sin_Comprar",
         "Prob_Recompra", "Prioridad", "Criterio", "Accion", "Total_Ventas_COP"
     ]
     st.dataframe(
         df_view[columnas_mostrar].rename(columns={
             "Cliente_ID": "ID",
             "Cliente": "Empresa",
+            "Cobertura": "Estado Cobertura",
             "Dias_Sin_Comprar": "Días sin Compra",
             "Prob_Recompra": "Prob. Recompra 30d (%)",
             "Prioridad": "Prioridad Contacto",
