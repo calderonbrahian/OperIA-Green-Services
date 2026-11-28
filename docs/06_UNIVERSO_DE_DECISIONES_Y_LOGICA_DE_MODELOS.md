@@ -77,14 +77,16 @@ flowchart LR
 
 ## 4. La Nueva Variable Maestra: `Estado_Cobertura`
 
-A solicitud de la dirección comercial y para resolver la ambigüedad en el seguimiento de pólizas, se introdujo formalmente la variable `Estado_Cobertura`:
+A solicitud de la dirección comercial y para resolver la ambigüedad en el seguimiento de pólizas, se introdujo formalmente la variable `Estado_Cobertura` evaluada sobre los 120 clientes auditados:
 
-| Estado Cobertura | Condición Lógica Estricta | Distribución en Cartera | Objetivo Comercial del Asesor |
+| Estado Cobertura | Condición Lógica Estricta | Distribución en Cartera Oficial | Objetivo Comercial del Asesor |
 | :--- | :--- | :---: | :--- |
-| **🟡 Próxima a Renovar (≤ 45d)** | Al menos un contrato activo con $0 \le (\text{Fecha\_Fin} - \text{Corte}) \le 45$ días. | 34 clientes (28.3%) | Renovación preventiva anticipada antes de que el contrato expire y el cliente quede desprotegido. |
-| **🟢 Vigente (> 45d)** | Contratos activos con vigencia remanente $> 45$ días y sin pólizas por vencer. | 43 clientes (35.8%) | Cuenta con servicio garantizado. Monitoreo de satisfacción y propuesta de *up-selling* en módulos nuevos. |
-| **🔴 Vencida (< 0d)** | Contratos cuya $\text{Fecha\_Fin} < 2026-10-31$ y no existen contratos vigentes de reemplazo. | 29 clientes (24.2%) | Urgencia de regularización contractual. Llamada para reactivar la póliza y evitar contingencias técnicas sin soporte. |
-| **⚪ Sin Cobertura** | El cliente no registra ningún contrato en `base_instalada.csv`. | 14 clientes (11.7%) | Oportunidad de *cross-selling*: Ofrecer la adquisición de una póliza de soporte o garantía por primera vez. |
+| **🟡 Próxima a Renovar (≤ 45d)** | Al menos un contrato activo con $0 \le (\text{Fecha\_Fin} - \text{Corte}) \le 45$ días. | 25 clientes (20.8%) | Renovación preventiva anticipada antes de que el contrato expire y el cliente quede desprotegido. |
+| **🟢 Vigente (> 45d)** | Contratos activos con vigencia remanente $> 45$ días y sin pólizas por vencer. | 45 clientes (37.5%) | Cuenta con servicio garantizado. Monitoreo de satisfacción y propuesta de *up-selling* en módulos nuevos. |
+| **🔴 Vencida (< 0d)** | Contratos cuya $\text{Fecha\_Fin} < 2026-10-31$ y no existen contratos vigentes de reemplazo. | 50 clientes (41.7%) | Urgencia de regularización contractual. Llamada para reactivar la póliza y evitar contingencias técnicas sin soporte. |
+| **⚪ Sin Cobertura** | El cliente no registra ningún contrato en `base_instalada.csv`. | 0 clientes (0.0%) | Oportunidad de *cross-selling*: Ofrecer la adquisición de una póliza de soporte o garantía por primera vez. |
+
+> **Nota de Gobernanza de Prioridades:** La prioridad de gestión comercial (`ALTA`, `MEDIA`, `NORMAL`, `BAJA`) está gobernada de forma determinística por las reglas de negocio de Cobertura y Recencia. La probabilidad de recompra del modelo de IA ($P \ge 40\%$) actúa como **criterio de ordenamiento y desempate dentro de cada cola de prioridad**, asegurando que los clientes con mayor retorno esperado sean contactados en primer lugar por el equipo comercial.
 
 ---
 

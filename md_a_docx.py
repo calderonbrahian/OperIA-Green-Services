@@ -96,8 +96,17 @@ def convertir(origen: Path, destino: Path):
 
 if __name__ == "__main__":
     base = Path(__file__).resolve().parent
-    md = base / "docs" / "07_INFORME_REVISION_PLAN_PRODUCTO_Y_MEMORIA.md"
+    
+    # 1. Informe de Revision y Memoria
+    md1 = base / "docs" / "07_INFORME_REVISION_PLAN_PRODUCTO_Y_MEMORIA.md"
     for out in (base / "docs" / "Informe_Revision_Plan_Producto_Memoria_OperIA.docx",
                 base.parent / "Documentacion" / "Informe_Revision_Plan_Producto_Memoria_OperIA.docx"):
-        convertir(md, out)
+        convertir(md1, out)
+        print("Creado:", out)
+
+    # 2. Manual Universo de Decisiones
+    md2 = base / "docs" / "06_UNIVERSO_DE_DECISIONES_Y_LOGICA_DE_MODELOS.md"
+    for out in (base / "docs" / "Manual_Universo_Decisiones_OperIA.docx",
+                base.parent / "Documentacion" / "Manual_Universo_Decisiones_OperIA.docx"):
+        convertir(md2, out)
         print("Creado:", out)

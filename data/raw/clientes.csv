@@ -1,121 +1,121 @@
 ﻿cliente_id,nombre_prueba,sector_prueba,ciudad_prueba,fecha_alta,canal_preferido_prueba,origen_datos
-CLI001,Cliente Corporativo 001 SAS,Financiero,Barranquilla,2025-08-03,Ejecutivo Comercial,Generación sintética reproducible
-CLI002,Cliente Corporativo 002 SAS,Educación,Medellín,2025-02-25,Correo Electrónico,Generación sintética reproducible
-CLI003,Cliente Corporativo 003 SAS,Tecnología,Cartagena,2025-02-07,Portal Web,Generación sintética reproducible
-CLI004,Cliente Corporativo 004 SAS,Financiero,Cali,2025-01-24,WhatsApp Corporativo,Generación sintética reproducible
-CLI005,Cliente Corporativo 005 SAS,Comercio,Pereira,2025-05-12,Ejecutivo Comercial,Generación sintética reproducible
-CLI006,Cliente Corporativo 006 SAS,Salud,Barranquilla,2025-04-11,Correo Electrónico,Generación sintética reproducible
-CLI007,Cliente Corporativo 007 SAS,Manufactura,Cali,2025-08-06,WhatsApp Corporativo,Generación sintética reproducible
-CLI008,Cliente Corporativo 008 SAS,Comercio,Bogotá,2025-07-19,WhatsApp Corporativo,Generación sintética reproducible
-CLI009,Cliente Corporativo 009 SAS,Logística,Bogotá,2025-02-12,Correo Electrónico,Generación sintética reproducible
-CLI010,Cliente Corporativo 010 SAS,Salud,Bucaramanga,2025-08-31,WhatsApp Corporativo,Generación sintética reproducible
-CLI011,Cliente Corporativo 011 SAS,Manufactura,Cali,2025-03-08,Ejecutivo Comercial,Generación sintética reproducible
-CLI012,Cliente Corporativo 012 SAS,Logística,Bucaramanga,2025-05-10,Correo Electrónico,Generación sintética reproducible
-CLI013,Cliente Corporativo 013 SAS,Manufactura,Cartagena,2025-02-27,Ejecutivo Comercial,Generación sintética reproducible
-CLI014,Cliente Corporativo 014 SAS,Tecnología,Cali,2025-03-01,Portal Web,Generación sintética reproducible
-CLI015,Cliente Corporativo 015 SAS,Logística,Cali,2025-06-18,Portal Web,Generación sintética reproducible
-CLI016,Cliente Corporativo 016 SAS,Comercio,Bogotá,2025-01-12,Ejecutivo Comercial,Generación sintética reproducible
-CLI017,Cliente Corporativo 017 SAS,Financiero,Bogotá,2025-04-30,WhatsApp Corporativo,Generación sintética reproducible
-CLI018,Cliente Corporativo 018 SAS,Financiero,Bogotá,2025-06-08,WhatsApp Corporativo,Generación sintética reproducible
-CLI019,Cliente Corporativo 019 SAS,Comercio,Cartagena,2025-08-04,Ejecutivo Comercial,Generación sintética reproducible
-CLI020,Cliente Corporativo 020 SAS,Comercio,Bucaramanga,2025-07-04,Correo Electrónico,Generación sintética reproducible
-CLI021,Cliente Corporativo 021 SAS,Financiero,Bucaramanga,2025-03-07,Correo Electrónico,Generación sintética reproducible
-CLI022,Cliente Corporativo 022 SAS,Educación,Bucaramanga,2025-08-16,Portal Web,Generación sintética reproducible
-CLI023,Cliente Corporativo 023 SAS,Tecnología,Pereira,2025-05-15,Correo Electrónico,Generación sintética reproducible
-CLI024,Cliente Corporativo 024 SAS,Financiero,Bogotá,2025-07-18,Ejecutivo Comercial,Generación sintética reproducible
-CLI025,Cliente Corporativo 025 SAS,Logística,Bogotá,2025-05-24,WhatsApp Corporativo,Generación sintética reproducible
-CLI026,Cliente Corporativo 026 SAS,Logística,Bogotá,2025-08-12,Ejecutivo Comercial,Generación sintética reproducible
-CLI027,Cliente Corporativo 027 SAS,Tecnología,Cartagena,2025-04-09,WhatsApp Corporativo,Generación sintética reproducible
-CLI028,Cliente Corporativo 028 SAS,Manufactura,Barranquilla,2025-01-11,Ejecutivo Comercial,Generación sintética reproducible
-CLI029,Cliente Corporativo 029 SAS,Logística,Bucaramanga,2025-08-24,WhatsApp Corporativo,Generación sintética reproducible
-CLI030,Cliente Corporativo 030 SAS,Tecnología,Medellín,2025-04-26,WhatsApp Corporativo,Generación sintética reproducible
-CLI031,Cliente Corporativo 031 SAS,Logística,Cali,2025-03-26,Ejecutivo Comercial,Generación sintética reproducible
-CLI032,Cliente Corporativo 032 SAS,Salud,Cali,2025-09-03,WhatsApp Corporativo,Generación sintética reproducible
-CLI033,Cliente Corporativo 033 SAS,Comercio,Bucaramanga,2025-07-03,WhatsApp Corporativo,Generación sintética reproducible
-CLI034,Cliente Corporativo 034 SAS,Tecnología,Pereira,2025-05-09,Correo Electrónico,Generación sintética reproducible
-CLI035,Cliente Corporativo 035 SAS,Salud,Bogotá,2025-07-14,Ejecutivo Comercial,Generación sintética reproducible
-CLI036,Cliente Corporativo 036 SAS,Comercio,Bogotá,2025-03-23,WhatsApp Corporativo,Generación sintética reproducible
-CLI037,Cliente Corporativo 037 SAS,Educación,Bucaramanga,2025-03-14,WhatsApp Corporativo,Generación sintética reproducible
-CLI038,Cliente Corporativo 038 SAS,Manufactura,Medellín,2025-08-16,Portal Web,Generación sintética reproducible
-CLI039,Cliente Corporativo 039 SAS,Comercio,Pereira,2025-02-07,Portal Web,Generación sintética reproducible
-CLI040,Cliente Corporativo 040 SAS,Tecnología,Pereira,2025-03-15,Portal Web,Generación sintética reproducible
-CLI041,Cliente Corporativo 041 SAS,Tecnología,Cartagena,2025-02-01,Correo Electrónico,Generación sintética reproducible
-CLI042,Cliente Corporativo 042 SAS,Financiero,Pereira,2025-02-17,Ejecutivo Comercial,Generación sintética reproducible
-CLI043,Cliente Corporativo 043 SAS,Financiero,Barranquilla,2025-07-21,Portal Web,Generación sintética reproducible
-CLI044,Cliente Corporativo 044 SAS,Financiero,Barranquilla,2025-03-15,Correo Electrónico,Generación sintética reproducible
-CLI045,Cliente Corporativo 045 SAS,Logística,Pereira,2025-05-19,WhatsApp Corporativo,Generación sintética reproducible
-CLI046,Cliente Corporativo 046 SAS,Educación,Cali,2025-08-18,WhatsApp Corporativo,Generación sintética reproducible
-CLI047,Cliente Corporativo 047 SAS,Financiero,Bogotá,2025-01-26,WhatsApp Corporativo,Generación sintética reproducible
-CLI048,Cliente Corporativo 048 SAS,Educación,Pereira,2025-07-24,Correo Electrónico,Generación sintética reproducible
-CLI049,Cliente Corporativo 049 SAS,Comercio,Medellín,2025-04-16,Ejecutivo Comercial,Generación sintética reproducible
-CLI050,Cliente Corporativo 050 SAS,Educación,Bogotá,2025-02-11,WhatsApp Corporativo,Generación sintética reproducible
-CLI051,Cliente Corporativo 051 SAS,Educación,Bucaramanga,2025-04-27,Portal Web,Generación sintética reproducible
-CLI052,Cliente Corporativo 052 SAS,Salud,Bucaramanga,2025-06-05,WhatsApp Corporativo,Generación sintética reproducible
-CLI053,Cliente Corporativo 053 SAS,Financiero,Barranquilla,2025-02-05,Ejecutivo Comercial,Generación sintética reproducible
-CLI054,Cliente Corporativo 054 SAS,Financiero,Barranquilla,2025-04-08,Portal Web,Generación sintética reproducible
-CLI055,Cliente Corporativo 055 SAS,Financiero,Bogotá,2025-03-12,Correo Electrónico,Generación sintética reproducible
-CLI056,Cliente Corporativo 056 SAS,Comercio,Cartagena,2025-05-04,Correo Electrónico,Generación sintética reproducible
-CLI057,Cliente Corporativo 057 SAS,Logística,Medellín,2025-07-01,Ejecutivo Comercial,Generación sintética reproducible
-CLI058,Cliente Corporativo 058 SAS,Educación,Pereira,2025-01-25,Correo Electrónico,Generación sintética reproducible
-CLI059,Cliente Corporativo 059 SAS,Logística,Cali,2025-01-26,Ejecutivo Comercial,Generación sintética reproducible
-CLI060,Cliente Corporativo 060 SAS,Comercio,Cali,2025-01-28,WhatsApp Corporativo,Generación sintética reproducible
-CLI061,Cliente Corporativo 061 SAS,Educación,Bogotá,2025-07-08,WhatsApp Corporativo,Generación sintética reproducible
-CLI062,Cliente Corporativo 062 SAS,Comercio,Pereira,2025-05-09,Ejecutivo Comercial,Generación sintética reproducible
-CLI063,Cliente Corporativo 063 SAS,Financiero,Bogotá,2025-03-05,Portal Web,Generación sintética reproducible
-CLI064,Cliente Corporativo 064 SAS,Salud,Cartagena,2025-07-14,Correo Electrónico,Generación sintética reproducible
-CLI065,Cliente Corporativo 065 SAS,Financiero,Bucaramanga,2025-06-23,Ejecutivo Comercial,Generación sintética reproducible
-CLI066,Cliente Corporativo 066 SAS,Logística,Bogotá,2025-04-12,Portal Web,Generación sintética reproducible
-CLI067,Cliente Corporativo 067 SAS,Tecnología,Cartagena,2025-08-28,WhatsApp Corporativo,Generación sintética reproducible
-CLI068,Cliente Corporativo 068 SAS,Manufactura,Bucaramanga,2025-05-12,WhatsApp Corporativo,Generación sintética reproducible
-CLI069,Cliente Corporativo 069 SAS,Financiero,Cartagena,2025-05-05,Portal Web,Generación sintética reproducible
-CLI070,Cliente Corporativo 070 SAS,Financiero,Pereira,2025-04-05,Correo Electrónico,Generación sintética reproducible
-CLI071,Cliente Corporativo 071 SAS,Logística,Pereira,2025-05-31,Portal Web,Generación sintética reproducible
-CLI072,Cliente Corporativo 072 SAS,Manufactura,Barranquilla,2025-03-22,Correo Electrónico,Generación sintética reproducible
-CLI073,Cliente Corporativo 073 SAS,Educación,Bogotá,2025-03-10,Ejecutivo Comercial,Generación sintética reproducible
-CLI074,Cliente Corporativo 074 SAS,Comercio,Pereira,2025-09-02,WhatsApp Corporativo,Generación sintética reproducible
-CLI075,Cliente Corporativo 075 SAS,Tecnología,Medellín,2025-01-22,Portal Web,Generación sintética reproducible
-CLI076,Cliente Corporativo 076 SAS,Educación,Bucaramanga,2025-04-19,Ejecutivo Comercial,Generación sintética reproducible
-CLI077,Cliente Corporativo 077 SAS,Financiero,Cartagena,2025-06-07,Ejecutivo Comercial,Generación sintética reproducible
-CLI078,Cliente Corporativo 078 SAS,Logística,Bogotá,2025-02-01,WhatsApp Corporativo,Generación sintética reproducible
-CLI079,Cliente Corporativo 079 SAS,Educación,Barranquilla,2025-02-16,Portal Web,Generación sintética reproducible
-CLI080,Cliente Corporativo 080 SAS,Logística,Cali,2025-02-17,Ejecutivo Comercial,Generación sintética reproducible
-CLI081,Cliente Corporativo 081 SAS,Salud,Barranquilla,2025-08-26,WhatsApp Corporativo,Generación sintética reproducible
-CLI082,Cliente Corporativo 082 SAS,Comercio,Cartagena,2025-07-06,Ejecutivo Comercial,Generación sintética reproducible
-CLI083,Cliente Corporativo 083 SAS,Financiero,Barranquilla,2025-05-02,Portal Web,Generación sintética reproducible
-CLI084,Cliente Corporativo 084 SAS,Manufactura,Cali,2025-07-26,Portal Web,Generación sintética reproducible
-CLI085,Cliente Corporativo 085 SAS,Comercio,Medellín,2025-05-16,WhatsApp Corporativo,Generación sintética reproducible
-CLI086,Cliente Corporativo 086 SAS,Educación,Medellín,2025-05-01,WhatsApp Corporativo,Generación sintética reproducible
-CLI087,Cliente Corporativo 087 SAS,Logística,Bucaramanga,2025-08-21,Ejecutivo Comercial,Generación sintética reproducible
-CLI088,Cliente Corporativo 088 SAS,Comercio,Barranquilla,2025-05-25,Portal Web,Generación sintética reproducible
-CLI089,Cliente Corporativo 089 SAS,Financiero,Cartagena,2025-04-25,Ejecutivo Comercial,Generación sintética reproducible
-CLI090,Cliente Corporativo 090 SAS,Financiero,Barranquilla,2025-03-11,Correo Electrónico,Generación sintética reproducible
-CLI091,Cliente Corporativo 091 SAS,Educación,Pereira,2025-07-24,WhatsApp Corporativo,Generación sintética reproducible
-CLI092,Cliente Corporativo 092 SAS,Salud,Medellín,2025-07-24,Correo Electrónico,Generación sintética reproducible
-CLI093,Cliente Corporativo 093 SAS,Manufactura,Bucaramanga,2025-02-18,Ejecutivo Comercial,Generación sintética reproducible
-CLI094,Cliente Corporativo 094 SAS,Educación,Bucaramanga,2025-05-29,Ejecutivo Comercial,Generación sintética reproducible
-CLI095,Cliente Corporativo 095 SAS,Logística,Barranquilla,2025-04-09,Ejecutivo Comercial,Generación sintética reproducible
-CLI096,Cliente Corporativo 096 SAS,Salud,Pereira,2025-08-17,WhatsApp Corporativo,Generación sintética reproducible
-CLI097,Cliente Corporativo 097 SAS,Comercio,Cali,2025-03-01,Portal Web,Generación sintética reproducible
-CLI098,Cliente Corporativo 098 SAS,Tecnología,Bucaramanga,2025-05-29,Ejecutivo Comercial,Generación sintética reproducible
-CLI099,Cliente Corporativo 099 SAS,Educación,Cali,2025-08-03,Portal Web,Generación sintética reproducible
-CLI100,Cliente Corporativo 100 SAS,Financiero,Pereira,2025-07-03,WhatsApp Corporativo,Generación sintética reproducible
-CLI101,Cliente Corporativo 101 SAS,Tecnología,Pereira,2025-07-28,Ejecutivo Comercial,Generación sintética reproducible
-CLI102,Cliente Corporativo 102 SAS,Financiero,Bogotá,2025-06-02,WhatsApp Corporativo,Generación sintética reproducible
-CLI103,Cliente Corporativo 103 SAS,Educación,Pereira,2025-02-08,WhatsApp Corporativo,Generación sintética reproducible
-CLI104,Cliente Corporativo 104 SAS,Salud,Cartagena,2025-01-31,Portal Web,Generación sintética reproducible
-CLI105,Cliente Corporativo 105 SAS,Tecnología,Barranquilla,2025-01-28,WhatsApp Corporativo,Generación sintética reproducible
-CLI106,Cliente Corporativo 106 SAS,Manufactura,Barranquilla,2025-08-29,WhatsApp Corporativo,Generación sintética reproducible
-CLI107,Cliente Corporativo 107 SAS,Logística,Bogotá,2025-07-01,Ejecutivo Comercial,Generación sintética reproducible
-CLI108,Cliente Corporativo 108 SAS,Tecnología,Barranquilla,2025-07-05,Correo Electrónico,Generación sintética reproducible
-CLI109,Cliente Corporativo 109 SAS,Manufactura,Cartagena,2025-01-12,Correo Electrónico,Generación sintética reproducible
-CLI110,Cliente Corporativo 110 SAS,Logística,Cali,2025-07-22,Portal Web,Generación sintética reproducible
-CLI111,Cliente Corporativo 111 SAS,Tecnología,Bucaramanga,2025-03-19,Correo Electrónico,Generación sintética reproducible
-CLI112,Cliente Corporativo 112 SAS,Salud,Pereira,2025-07-11,Correo Electrónico,Generación sintética reproducible
-CLI113,Cliente Corporativo 113 SAS,Tecnología,Bogotá,2025-04-02,WhatsApp Corporativo,Generación sintética reproducible
-CLI114,Cliente Corporativo 114 SAS,Educación,Medellín,2025-05-12,WhatsApp Corporativo,Generación sintética reproducible
-CLI115,Cliente Corporativo 115 SAS,Logística,Bogotá,2025-07-30,Ejecutivo Comercial,Generación sintética reproducible
-CLI116,Cliente Corporativo 116 SAS,Educación,Bucaramanga,2025-04-29,Correo Electrónico,Generación sintética reproducible
-CLI117,Cliente Corporativo 117 SAS,Manufactura,Barranquilla,2025-06-19,Correo Electrónico,Generación sintética reproducible
-CLI118,Cliente Corporativo 118 SAS,Salud,Cartagena,2025-03-21,Ejecutivo Comercial,Generación sintética reproducible
-CLI119,Cliente Corporativo 119 SAS,Salud,Pereira,2025-04-18,Portal Web,Generación sintética reproducible
-CLI120,Cliente Corporativo 120 SAS,Salud,Medellín,2025-08-05,Ejecutivo Comercial,Generación sintética reproducible
+CLI001,Cliente de prueba 001,Industria,Barranquilla,2025-04-12,Correo,Prueba
+CLI002,Cliente de prueba 002,Industria,Medellín,2025-09-14,Llamada,Prueba
+CLI003,Cliente de prueba 003,Industria,Barranquilla,2025-01-03,Correo,Prueba
+CLI004,Cliente de prueba 004,Servicios,Bogotá,2025-03-22,Correo,Prueba
+CLI005,Cliente de prueba 005,Servicios,Barranquilla,2025-04-23,Correo,Prueba
+CLI006,Cliente de prueba 006,Educación,Barranquilla,2025-09-17,Llamada,Prueba
+CLI007,Cliente de prueba 007,Comercio,Barranquilla,2025-05-28,Llamada,Prueba
+CLI008,Cliente de prueba 008,Comercio,Barranquilla,2025-05-23,Llamada,Prueba
+CLI009,Cliente de prueba 009,Servicios,Barranquilla,2025-03-10,Correo,Prueba
+CLI010,Cliente de prueba 010,Educación,Bogotá,2025-09-08,Llamada,Prueba
+CLI011,Cliente de prueba 011,Industria,Bogotá,2025-03-30,Llamada,Prueba
+CLI012,Cliente de prueba 012,Educación,Barranquilla,2025-01-10,Llamada,Prueba
+CLI013,Cliente de prueba 013,Educación,Barranquilla,2025-08-30,Correo,Prueba
+CLI014,Cliente de prueba 014,Servicios,Barranquilla,2025-06-27,Llamada,Prueba
+CLI015,Cliente de prueba 015,Industria,Bogotá,2025-09-12,Llamada,Prueba
+CLI016,Cliente de prueba 016,Servicios,Cali,2025-07-26,Correo,Prueba
+CLI017,Cliente de prueba 017,Servicios,Barranquilla,2025-06-13,Correo,Prueba
+CLI018,Cliente de prueba 018,Industria,Barranquilla,2025-04-09,Correo,Prueba
+CLI019,Cliente de prueba 019,Comercio,Bogotá,2025-03-09,Llamada,Prueba
+CLI020,Cliente de prueba 020,Educación,Barranquilla,2025-03-26,Correo,Prueba
+CLI021,Cliente de prueba 021,Servicios,Cali,2025-02-18,Llamada,Prueba
+CLI022,Cliente de prueba 022,Industria,Barranquilla,2025-10-07,Correo,Prueba
+CLI023,Cliente de prueba 023,Industria,Bogotá,2025-06-19,Llamada,Prueba
+CLI024,Cliente de prueba 024,Comercio,Barranquilla,2025-07-01,Correo,Prueba
+CLI025,Cliente de prueba 025,Servicios,Barranquilla,2025-08-16,Llamada,Prueba
+CLI026,Cliente de prueba 026,Educación,Cali,2025-04-17,Correo,Prueba
+CLI027,Cliente de prueba 027,Comercio,Bogotá,2025-01-28,Llamada,Prueba
+CLI028,Cliente de prueba 028,Educación,Bogotá,2025-04-28,Correo,Prueba
+CLI029,Cliente de prueba 029,Industria,Cali,2025-07-23,Llamada,Prueba
+CLI030,Cliente de prueba 030,Educación,Medellín,2025-10-03,Llamada,Prueba
+CLI031,Cliente de prueba 031,Servicios,Medellín,2025-08-07,Correo,Prueba
+CLI032,Cliente de prueba 032,Industria,Barranquilla,2025-04-24,Llamada,Prueba
+CLI033,Cliente de prueba 033,Educación,Barranquilla,2025-08-18,Correo,Prueba
+CLI034,Cliente de prueba 034,Industria,Barranquilla,2025-07-14,Llamada,Prueba
+CLI035,Cliente de prueba 035,Industria,Cali,2025-03-21,Llamada,Prueba
+CLI036,Cliente de prueba 036,Educación,Cali,2025-05-15,Correo,Prueba
+CLI037,Cliente de prueba 037,Comercio,Barranquilla,2025-05-10,Llamada,Prueba
+CLI038,Cliente de prueba 038,Servicios,Bogotá,2025-04-14,Correo,Prueba
+CLI039,Cliente de prueba 039,Educación,Barranquilla,2025-07-14,Llamada,Prueba
+CLI040,Cliente de prueba 040,Industria,Medellín,2025-06-30,Llamada,Prueba
+CLI041,Cliente de prueba 041,Educación,Medellín,2025-02-06,Correo,Prueba
+CLI042,Cliente de prueba 042,Educación,Cali,2025-03-27,Correo,Prueba
+CLI043,Cliente de prueba 043,Comercio,Barranquilla,2025-06-20,Correo,Prueba
+CLI044,Cliente de prueba 044,Industria,Bogotá,2025-03-27,Llamada,Prueba
+CLI045,Cliente de prueba 045,Comercio,Medellín,2025-06-04,Llamada,Prueba
+CLI046,Cliente de prueba 046,Educación,Bogotá,2025-03-12,Correo,Prueba
+CLI047,Cliente de prueba 047,Comercio,Bogotá,2025-10-06,Llamada,Prueba
+CLI048,Cliente de prueba 048,Comercio,Medellín,2025-07-14,Llamada,Prueba
+CLI049,Cliente de prueba 049,Industria,Cali,2025-01-31,Llamada,Prueba
+CLI050,Cliente de prueba 050,Comercio,Medellín,2025-05-22,Correo,Prueba
+CLI051,Cliente de prueba 051,Educación,Barranquilla,2025-02-27,Correo,Prueba
+CLI052,Cliente de prueba 052,Comercio,Bogotá,2025-08-21,Correo,Prueba
+CLI053,Cliente de prueba 053,Educación,Bogotá,2025-08-23,Llamada,Prueba
+CLI054,Cliente de prueba 054,Educación,Cali,2025-03-14,Llamada,Prueba
+CLI055,Cliente de prueba 055,Educación,Cali,2025-06-28,Llamada,Prueba
+CLI056,Cliente de prueba 056,Servicios,Barranquilla,2025-07-05,Correo,Prueba
+CLI057,Cliente de prueba 057,Educación,Cali,2025-06-15,Llamada,Prueba
+CLI058,Cliente de prueba 058,Servicios,Barranquilla,2025-02-28,Correo,Prueba
+CLI059,Cliente de prueba 059,Educación,Medellín,2025-06-02,Correo,Prueba
+CLI060,Cliente de prueba 060,Servicios,Cali,2025-05-20,Llamada,Prueba
+CLI061,Cliente de prueba 061,Servicios,Barranquilla,2025-03-03,Correo,Prueba
+CLI062,Cliente de prueba 062,Servicios,Bogotá,2025-07-23,Llamada,Prueba
+CLI063,Cliente de prueba 063,Educación,Medellín,2025-08-06,Llamada,Prueba
+CLI064,Cliente de prueba 064,Educación,Barranquilla,2025-07-28,Llamada,Prueba
+CLI065,Cliente de prueba 065,Educación,Barranquilla,2025-04-25,Llamada,Prueba
+CLI066,Cliente de prueba 066,Servicios,Bogotá,2025-08-11,Llamada,Prueba
+CLI067,Cliente de prueba 067,Servicios,Barranquilla,2025-04-30,Llamada,Prueba
+CLI068,Cliente de prueba 068,Educación,Barranquilla,2025-08-02,Correo,Prueba
+CLI069,Cliente de prueba 069,Educación,Barranquilla,2025-08-19,Llamada,Prueba
+CLI070,Cliente de prueba 070,Servicios,Medellín,2025-06-24,Correo,Prueba
+CLI071,Cliente de prueba 071,Servicios,Cali,2025-08-13,Correo,Prueba
+CLI072,Cliente de prueba 072,Servicios,Bogotá,2025-07-11,Correo,Prueba
+CLI073,Cliente de prueba 073,Servicios,Bogotá,2025-01-20,Llamada,Prueba
+CLI074,Cliente de prueba 074,Comercio,Cali,2025-04-25,Correo,Prueba
+CLI075,Cliente de prueba 075,Educación,Medellín,2025-08-09,Llamada,Prueba
+CLI076,Cliente de prueba 076,Comercio,Cali,2025-04-07,Correo,Prueba
+CLI077,Cliente de prueba 077,Educación,Barranquilla,2025-08-13,Correo,Prueba
+CLI078,Cliente de prueba 078,Comercio,Barranquilla,2025-08-24,Correo,Prueba
+CLI079,Cliente de prueba 079,Servicios,Bogotá,2025-03-30,Correo,Prueba
+CLI080,Cliente de prueba 080,Industria,Medellín,2025-02-13,Llamada,Prueba
+CLI081,Cliente de prueba 081,Educación,Barranquilla,2025-07-31,Llamada,Prueba
+CLI082,Cliente de prueba 082,Servicios,Barranquilla,2025-01-21,Llamada,Prueba
+CLI083,Cliente de prueba 083,Industria,Bogotá,2025-02-17,Llamada,Prueba
+CLI084,Cliente de prueba 084,Servicios,Cali,2025-01-22,Correo,Prueba
+CLI085,Cliente de prueba 085,Servicios,Cali,2025-06-08,Correo,Prueba
+CLI086,Cliente de prueba 086,Comercio,Medellín,2025-03-10,Correo,Prueba
+CLI087,Cliente de prueba 087,Servicios,Bogotá,2025-03-10,Correo,Prueba
+CLI088,Cliente de prueba 088,Comercio,Barranquilla,2025-08-02,Llamada,Prueba
+CLI089,Cliente de prueba 089,Comercio,Barranquilla,2025-05-29,Llamada,Prueba
+CLI090,Cliente de prueba 090,Comercio,Bogotá,2025-01-04,Llamada,Prueba
+CLI091,Cliente de prueba 091,Industria,Medellín,2025-01-17,Correo,Prueba
+CLI092,Cliente de prueba 092,Servicios,Barranquilla,2025-01-08,Correo,Prueba
+CLI093,Cliente de prueba 093,Industria,Bogotá,2025-05-02,Llamada,Prueba
+CLI094,Cliente de prueba 094,Educación,Medellín,2025-07-28,Llamada,Prueba
+CLI095,Cliente de prueba 095,Servicios,Medellín,2025-08-29,Llamada,Prueba
+CLI096,Cliente de prueba 096,Comercio,Medellín,2025-02-27,Correo,Prueba
+CLI097,Cliente de prueba 097,Servicios,Medellín,2025-01-27,Correo,Prueba
+CLI098,Cliente de prueba 098,Industria,Medellín,2025-03-10,Correo,Prueba
+CLI099,Cliente de prueba 099,Educación,Bogotá,2025-07-30,Correo,Prueba
+CLI100,Cliente de prueba 100,Servicios,Barranquilla,2025-04-07,Llamada,Prueba
+CLI101,Cliente de prueba 101,Industria,Cali,2025-07-18,Llamada,Prueba
+CLI102,Cliente de prueba 102,Industria,Medellín,2025-09-21,Llamada,Prueba
+CLI103,Cliente de prueba 103,Servicios,Bogotá,2025-06-30,Correo,Prueba
+CLI104,Cliente de prueba 104,Industria,Cali,2025-05-13,Llamada,Prueba
+CLI105,Cliente de prueba 105,Industria,Bogotá,2025-04-18,Correo,Prueba
+CLI106,Cliente de prueba 106,Servicios,Bogotá,2025-09-11,Correo,Prueba
+CLI107,Cliente de prueba 107,Comercio,Bogotá,2025-04-19,Correo,Prueba
+CLI108,Cliente de prueba 108,Servicios,Medellín,2025-08-17,Llamada,Prueba
+CLI109,Cliente de prueba 109,Comercio,Barranquilla,2025-09-20,Correo,Prueba
+CLI110,Cliente de prueba 110,Comercio,Bogotá,2025-01-14,Llamada,Prueba
+CLI111,Cliente de prueba 111,Industria,Barranquilla,2025-05-04,Llamada,Prueba
+CLI112,Cliente de prueba 112,Comercio,Barranquilla,2025-03-31,Correo,Prueba
+CLI113,Cliente de prueba 113,Industria,Medellín,2025-01-03,Correo,Prueba
+CLI114,Cliente de prueba 114,Industria,Barranquilla,2025-08-31,Correo,Prueba
+CLI115,Cliente de prueba 115,Industria,Cali,2025-03-18,Correo,Prueba
+CLI116,Cliente de prueba 116,Industria,Bogotá,2025-05-03,Correo,Prueba
+CLI117,Cliente de prueba 117,Industria,Medellín,2025-09-08,Correo,Prueba
+CLI118,Cliente de prueba 118,Educación,Bogotá,2025-05-20,Correo,Prueba
+CLI119,Cliente de prueba 119,Industria,Cali,2025-06-15,Correo,Prueba
+CLI120,Cliente de prueba 120,Industria,Cali,2025-09-14,Correo,Prueba

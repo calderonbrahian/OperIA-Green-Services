@@ -19,7 +19,7 @@ from src.modelos_operativos import (
     construir_dataset_operia_completo
 )
 from src.data_loader import load_csv, load_trm
-from src.config import OUTPUTS_DIR, VISOR_DIR, DATA_RAW_DIR
+from src.config import OUTPUTS_DIR, VISOR_DIR, DATA_RAW_DIR, DATA_SYNTH_DIR, verificar_datos_oficiales
 
 def actualizar_visor_html(resumen_clientes):
     """Actualiza los datos del visor HTML con la última corrida generada."""
@@ -69,10 +69,18 @@ def main():
     print("   IA en Operaciones | Hackatón EstudIA (Capa 2)")
     print("=" * 70)
 
+    problemas = verificar_datos_oficiales(DATA_RAW_DIR)
+    if problemas:
+        print("\n⚠ DATOS ALTERADOS: data/raw no coincide con el paquete oficial:")
+        for p in problemas:
+            print("   -", p)
+    else:
+        print("\n✓ Integridad: data/raw coincide con el manifiesto SHA-256 oficial.")
+
     if args.generar_datos:
-        print("\n[Módulo Generador] Creando datos sintéticos de prueba con semilla reproducible...")
+        print("\n[Módulo Generador] Creando datos sintéticos (data/synthetic; NO toca data/raw)...")
         gen = GeneradorDatosSinteticos(seed=212026)
-        conteo = gen.guardar_dataset_completo(DATA_RAW_DIR)
+        conteo = gen.guardar_dataset_completo(DATA_SYNTH_DIR)
         for archivo, cant in conteo.items():
             print(f"  ✓ {archivo}: {cant} registros generados.")
 
@@ -103,6 +111,9 @@ def main():
         csv_path, xlsx_path = construir_dataset_operia_completo()
         print(f"  ✓ CSV Consolidado generado en: {csv_path.name}")
         print(f"  ✓ Excel XLSX generado en:     {xlsx_path.name}")
+        cif = json.loads((OUTPUTS_DIR / "cifras_dashboard.json").read_text(encoding="utf-8"))
+        print(f"  ✓ Vista 360: {cif['clientes_total']} clientes | estados: {cif['estados']}")
+        print(f"  ✓ Backtest MAE modelo={cif['backtest_pronostico']['mae_modelo_cop']:,.0f} vs línea base={cif['backtest_pronostico']['mae_linea_base_cop']:,.0f}")
 
     if args.validar or args.all:
         print("\n[4/4] Ejecutando batería de validación y control de calidad...")

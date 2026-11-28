@@ -1,0 +1,142 @@
+{
+  "fecha_corte": "2026-10-31",
+  "datos_oficiales_integros": true,
+  "datos_alterados": [],
+  "clientes_total": 120,
+  "operaciones_confirmadas": 1371,
+  "ingreso_cop_total": 5647449456.37,
+  "estados": {
+    "Frecuente (Activo)": 38,
+    "Base Instalada (Seguimiento)": 41,
+    "Frío (Riesgo de Abandono)": 41,
+    "Sin Compras (Prospecto)": 0
+  },
+  "coberturas": {
+    "Próxima a Renovar (≤ 45d)": 25,
+    "Vigente (> 45d)": 45,
+    "Vencida (< 0d)": 50,
+    "Sin Cobertura": 0
+  },
+  "prioridades": {
+    "ALTA": 41,
+    "MEDIA": 45,
+    "NORMAL": 17,
+    "BAJA": 17
+  },
+  "frecuentes_8ops": 90,
+  "frios_regla_oficial": 41,
+  "alta_propension_40": 94,
+  "proyeccion": {
+    "mes_objetivo": "2026-11",
+    "ingreso_esperado_cop": 216486298.77,
+    "compradores_esperados": 94,
+    "ticket_promedio_global_cop": 4119219.15,
+    "metodo": "Σ P(compra 30d) × ticket promedio propio del cliente",
+    "nota": "Estimación no calibrada; ver backtest_pronostico para su error frente a la línea base."
+  },
+  "backtest_pronostico": {
+    "detalle": [
+      {
+        "corte": "2026-07-31",
+        "mes_objetivo": "2026-08",
+        "pronostico_modelo_cop": 231378679.21,
+        "linea_base_ultimo_mes_cop": 211194532.41,
+        "real_cop": 269727209.29
+      },
+      {
+        "corte": "2026-08-31",
+        "mes_objetivo": "2026-09",
+        "pronostico_modelo_cop": 228636131.99,
+        "linea_base_ultimo_mes_cop": 269727209.29,
+        "real_cop": 193994037.83
+      },
+      {
+        "corte": "2026-09-30",
+        "mes_objetivo": "2026-10",
+        "pronostico_modelo_cop": 221602237.71,
+        "linea_base_ultimo_mes_cop": 193994037.83,
+        "real_cop": 217155424.07
+      }
+    ],
+    "mae_modelo_cop": 25812479.29,
+    "mae_linea_base_cop": 52475744.86,
+    "gana_modelo": true,
+    "conclusion": "El pronóstico del modelo supera a «repetir el último mes»."
+  },
+  "metricas_modelo": {
+    "modelo": "Regresión Logística Didáctica (sin dependencias externas)",
+    "entrenamiento_rango": "hasta 2026-04-30",
+    "validacion_rango": "2026-05-01 a 2026-06-30",
+    "prueba_rango": "2026-07-01 a 2026-09-30",
+    "ventana_objetivo_dias": 30,
+    "umbral_seleccionado": 0.4,
+    "variables": [
+      "recencia_dias",
+      "frecuencia_30d",
+      "frecuencia_90d",
+      "historial_n"
+    ],
+    "medias_escalado": [
+      126.56367583212734,
+      0.683068017366136,
+      1.8813314037626627,
+      4.354558610709117
+    ],
+    "desviaciones_escalado": [
+      234.52698013529215,
+      0.8382946438992294,
+      1.5947041403913726,
+      3.5579008796115668
+    ],
+    "pesos_modelo": [
+      0.026714,
+      -0.059519,
+      0.101297,
+      0.130378,
+      -0.124296
+    ],
+    "metricas_validacion": {
+      "n": 240,
+      "TP": 96,
+      "TN": 16,
+      "FP": 125,
+      "FN": 3,
+      "accuracy": 0.4667,
+      "precision": 0.4344,
+      "recall": 0.9697,
+      "F1": 0.6
+    },
+    "metricas_prueba_modelo": {
+      "n": 360,
+      "TP": 120,
+      "TN": 51,
+      "FP": 177,
+      "FN": 12,
+      "accuracy": 0.475,
+      "precision": 0.404,
+      "recall": 0.9091,
+      "F1": 0.5594
+    },
+    "metricas_prueba_linea_base_compra_reciente": {
+      "n": 360,
+      "TP": 73,
+      "TN": 161,
+      "FP": 67,
+      "FN": 59,
+      "accuracy": 0.65,
+      "precision": 0.5214,
+      "recall": 0.553,
+      "F1": 0.5368
+    },
+    "advertencia": "Datos de prueba; valida metodología temporal antes de aplicar en producción."
+  },
+  "trm": {
+    "meses_analizados": 22,
+    "correlacion_trm_ventas": -0.183,
+    "pendiente_beta": -185935.03,
+    "intercepto_alpha": 1023309341.52,
+    "interpretacion": "Correlación neutra o independiente de la TRM de prueba."
+  },
+  "trm_ultima": 4029.85,
+  "advertencia": "Datos y TRM de prueba del paquete del reto; no son datos ni tasa oficial de Green Services."
+}

@@ -228,3 +228,23 @@ python build_index.py                # regenera el sitio estático
 5. Mostrar matriz de confusión y añadir backtest MAE del pronóstico.
 6. Agregar tests de reglas, no-fuga temporal y 120 clientes.
 7. Sesión de validación con Green Services para cerrar las preguntas de la sección 4.3.
+
+---
+
+## 7. Estado de Ejecución de la Fase 0 (Remediación y Cierre Técnico)
+
+En la sesión del 28 de noviembre de 2026 se completaron al 100 % los 5 ítems de la Fase 0:
+
+| Hallazgo | Estado | Evidencia de Cierre y Verificación |
+| :-: | :-: | :--- |
+| **H1** | **Cerrado** | Se restauraron las 6 tablas oficiales desde `Green_Services_Recursos_de_Prueba/01_Datos/`. Se creó `config/sha256_datos_oficiales.json` y la función `verificar_datos_oficiales()` en `src/config.py`. Los 41 clientes fríos y las 1,371 operaciones confirmadas ($5,647.4M COP) quedan 100 % verificados. |
+| **H2** | **Cerrado** | La vista `vista_clientes_360.csv` se construye con un *LEFT JOIN* garantizado sobre los 120 clientes de `clientes.csv`. Clientes sin compras o con 0 días quedan debidamente clasificados en el universo completo. |
+| **H3** | **Cerrado** | Se implementó `calcular_estado_cobertura()` con 4 estados mutuamente excluyentes basados en el mínimo de días a vencimiento. Se unificó el cálculo de prioridad en `prioridad_llamada_operativa()`. |
+| **H4** | **Cerrado** | Se definió y codificó formalmente que la Prioridad de gestión (`ALTA`, `MEDIA`, `NORMAL`, `BAJA`) está gobernada por las reglas de Cobertura y Recencia, mientras que el modelo de Machine Learning ($P \ge 0.40$) actúa como el criterio de ordenamiento interno dentro de cada cola de prioridad. |
+| **H5** | **Cerrado** | Se integró el módulo `src/pronostico.py` con backtesting histórico temporal (ventanas Jul–Oct 2026). El modelo obtuvo un MAE de $25,812,479 COP frente a un MAE de $52,475,745 COP de la línea base ingenua (-50.81 % de reducción del error). Se añadió nota de transparencia sobre la TRM de prueba en Streamlit y visor web. |
+
+### Resultados de la Suite de Pruebas Automatizadas
+- `tests/test_reglas_operia.py`: 17 pruebas unitarias ejecutadas y aprobadas en 0.02s.
+- `main.py --all`: 6 casos controlados oficiales aprobados (6/6) y 7 incidencias de calidad detectadas y aisladas.
+- Todas las salidas (`outputs/cifras_dashboard.json`, `app_operia.py`, `build_index.py`, `index.html`, `visor/visor.html`) sincronizadas con la misma fuente de verdad.
+

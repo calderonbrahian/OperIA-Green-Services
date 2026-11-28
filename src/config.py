@@ -26,3 +26,30 @@ def load_config() -> dict:
             data = json.load(f)
             return {**DEFAULT_PARAMS, **data}
     return DEFAULT_PARAMS
+
+DATA_SYNTH_DIR = PROJECT_ROOT / "data" / "synthetic"
+
+
+def verificar_datos_oficiales(raw_dir: Path = DATA_RAW_DIR) -> list:
+    """Compara el SHA-256 de cada CSV de data/raw con el manifiesto oficial.
+
+    Retorna la lista de archivos alterados o ausentes (vacía = datos íntegros).
+    Normaliza finales de línea para que Windows y Linux den el mismo resultado.
+    """
+    import hashlib
+    ref_file = CONFIG_DIR / "sha256_datos_oficiales.json"
+    if not ref_file.exists():
+        return []
+    with open(ref_file, "r", encoding="utf-8") as f:
+        esperado = json.load(f)
+    problemas = []
+    for nombre, h in esperado.items():
+        p = raw_dir / nombre
+        if not p.exists():
+            problemas.append(f"{nombre}: ausente")
+            continue
+        contenido = p.read_bytes()
+        if (hashlib.sha256(contenido).hexdigest() != h and
+                hashlib.sha256(contenido.replace(b"\r\n", b"\n")).hexdigest() != h):
+            problemas.append(f"{nombre}: contenido distinto al oficial")
+    return problemas

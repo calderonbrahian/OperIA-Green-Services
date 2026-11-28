@@ -3,7 +3,7 @@ from datetime import date
 import json
 from typing import Dict, Any, List
 
-from .config import DATA_VAL_DIR
+from .config import DATA_VAL_DIR, DATA_RAW_DIR
 from .data_loader import calcular_importe_cop, load_csv
 
 def validar_casos_controlados() -> List[Dict[str, Any]]:
@@ -72,8 +72,12 @@ def validar_casos_controlados() -> List[Dict[str, Any]]:
             aprobado = (dias == c["esperado_dias"] and es_prox == c["esperado_proxima"])
 
         elif nombre == "Sin datos":
-            obtenido = "Manejado correctamente (sin invención)"
-            aprobado = True
+            # Prueba real: el cliente no existe en clientes.csv ni tiene ventas; no se inventa historial.
+            cid = entrada["cliente_id"]
+            ids_clientes = {r["cliente_id"] for r in load_csv(DATA_RAW_DIR / "clientes.csv")}
+            ventas_cli = [r for r in load_csv(DATA_RAW_DIR / "ventas.csv") if r["cliente_id"] == cid]
+            aprobado = cid not in ids_clientes and not ventas_cli
+            obtenido = "Cliente no encontrado; sin historial inventado" if aprobado else "ERROR: el cliente existe"
 
         resultados.append({
             "caso": nombre,
@@ -129,5 +133,22 @@ def analizar_incidencias_opcionales() -> List[Dict[str, Any]]:
         # Producto inexistente
         if f.get("producto_id") == "PRO99":
             problemas.append({"fila": idx, "venta_id": vid, "tipo": "Producto inexistente (PRO99)"})
+
+    # Decisión documentada por fila (la guía exige: corregir, aislar o solicitar información; no inventar valores)
+    decisiones = {
+        "ID Duplicado": ("Aislar", "Descartar la copia; conservar la primera aparición del venta_id."),
+        "Cliente inexistente": ("Aislar", "No imputar a ningún cliente; pedir al área comercial confirmar el cliente."),
+        "Fecha inválida": ("Solicitar información", "No corregir la fecha; pedir la fecha real al responsable del dato."),
+        "Moneda no admitida": ("Aislar", "No convertir: no existe tasa para esa moneda; solicitar la política de conversión."),
+        "Cantidad negativa": ("Solicitar información", "Excluir del cálculo; confirmar si es devolución o error de captura."),
+        "Cantidad no numérica": ("Solicitar información", "Excluir del cálculo hasta aclarar el valor."),
+        "Precio unitario vacío": ("Solicitar información", "No inventar el precio; solicitarlo al área de facturación."),
+        "Producto inexistente": ("Aislar", "No asignar familia ni precio; solicitar actualización del catálogo."),
+    }
+    for p in problemas:
+        for prefijo, (decision, detalle) in decisiones.items():
+            if p["tipo"].startswith(prefijo):
+                p["decision"], p["tratamiento"] = decision, detalle
+                break
 
     return problemas

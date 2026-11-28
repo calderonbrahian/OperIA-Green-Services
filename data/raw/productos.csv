@@ -1,11 +1,11 @@
 ﻿producto_id,nombre_prueba,familia_prueba,tipo_prueba,moneda_lista,precio_lista,costo_referencia,vigencia_meses,origen_datos
-PRO01,Plataforma Cloud Enterprise,Software Cloud,Recurrente,USD,250.0,140.0,12,Generación sintética reproducible
-PRO02,Licencia Gestión Documental,Gestión Información,Recurrente,COP,850000.0,420000.0,12,Generación sintética reproducible
-PRO03,Módulo Auditoría y Trazabilidad,Ciberseguridad,Recurrente,USD,180.0,95.0,12,Generación sintética reproducible
-PRO04,Servicio Backup & Respaldo,Infraestructura,Recurrente,USD,320.0,170.0,12,Generación sintética reproducible
-PRO05,Soporte Premium 24/7,Servicios TI,Recurrente,COP,1200000.0,600000.0,12,Generación sintética reproducible
-PRO06,Consultoría Migración Datos,Servicios TI,Único,COP,3500000.0,1800000.0,0,Generación sintética reproducible
-PRO07,Licencia Firma Electrónica,Gestión Información,Recurrente,USD,120.0,60.0,12,Generación sintética reproducible
-PRO08,Paquete Almacenamiento 10TB,Infraestructura,Recurrente,USD,210.0,110.0,12,Generación sintética reproducible
-PRO09,Capacitación Operativa IA,Servicios TI,Único,COP,2200000.0,1000000.0,0,Generación sintética reproducible
-PRO10,Póliza Mantenimiento Servidores,Infraestructura,Recurrente,COP,1500000.0,750000.0,12,Generación sintética reproducible
+PRO01,Licencia de gestión documental,Software,Recurrente,USD,180,111.6,12,Prueba
+PRO02,Servicio de respaldo,Continuidad,Recurrente,COP,350000,217000.0,12,Prueba
+PRO03,Soporte operativo,Soporte,Recurrente,COP,480000,297600.0,6,Prueba
+PRO04,Implementación documental,Servicios,Único,COP,2800000,1736000.0,0,Prueba
+PRO05,Migración de información,Servicios,Único,COP,1900000,1178000.0,0,Prueba
+PRO06,Almacenamiento de información,Continuidad,Recurrente,USD,85,52.7,12,Prueba
+PRO07,Capacitación de usuarios,Servicios,Único,COP,720000,446400.0,0,Prueba
+PRO08,Licencia de consulta,Software,Recurrente,USD,95,58.9,12,Prueba
+PRO09,Revisión de continuidad,Servicios,Único,COP,1150000,713000.0,0,Prueba
+PRO10,Digitalización de prueba,Servicios,Único,COP,650000,403000.0,0,Prueba
